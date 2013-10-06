@@ -1,2 +1,3 @@
 default.conf
+kite_flag.conf
 test_uno.conf
