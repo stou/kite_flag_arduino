@@ -1,2 +1,0 @@
-# Simuino Setting Mon Oct  7 10:35:28 2013
-PROJECT: kite_flag.conf
