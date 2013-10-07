@@ -8,22 +8,21 @@
 // SCENDIGPIN 3    1     0
 // SCENDIGPIN 12   1     0
 
-// SCENDIGPIN 2    40    1
-// SCENDIGPIN 3    40    0
-// SCENDIGPIN 12   40    0
+// SCENDIGPIN 2    25    1
+// SCENDIGPIN 3    25    0
+// SCENDIGPIN 12   25    0
 
+// SCENDIGPIN 2    69    0
+// SCENDIGPIN 3    69    1
+// SCENDIGPIN 12   69    0
 
-// SCENDIGPIN 2    92    0
-// SCENDIGPIN 3    92    1
-// SCENDIGPIN 12   92    0
+// SCENDIGPIN 2    267   0
+// SCENDIGPIN 3    267   0
+// SCENDIGPIN 12   267   1
 
-// SCENDIGPIN 2    183   0
-// SCENDIGPIN 3    183   0
-// SCENDIGPIN 12   183   1
-
-// SCENDIGPIN 2    214   1
-// SCENDIGPIN 3    214   0
-// SCENDIGPIN 12   214   0
+// SCENDIGPIN 2    289   1
+// SCENDIGPIN 3    289   0
+// SCENDIGPIN 12   289   0
 
 //================================================
 //  Program source
@@ -31,6 +30,24 @@
 
 #define DEBUG_STATE 1
 
+//variabel for changing heat_time in min
+const int TRANSITION_TIME_MINUTES = 2; 
+const int HEAT_TIME_MINUTES = 10;
+const int HEAT_ENDING_SOON_TIME_MINUTES = 1;
+
+// number of milliseconds per minute
+#ifdef DEBUG_STATE
+// NB! speed up during debugging (2 ms second)
+const int MS_PER_MINUTE = 2;
+#else
+const int MS_PER_MINUTE = 1000 * 60;
+#endif
+//the duration of timed event nr 1, set to 1s while debugging
+const long TRANSITION_TIME_MS = MS_PER_MINUTE * TRANSITION_TIME_MINUTES;
+const long HEAT_TIME_MS = MS_PER_MINUTE * HEAT_TIME_MINUTES;
+const long HEAT_ENDING_SOON_TIME_MS = MS_PER_MINUTE * HEAT_ENDING_SOON_TIME_MINUTES;
+
+const long CYCLE_DURATION = TRANSITION_TIME_MS + HEAT_TIME_MINUTES;
 
 //Output for motor setup,Horn, stop switchs
 const int FLAG_MOTOR = 13;
@@ -42,56 +59,32 @@ const int NO_HEAT_FLAG = 2; //red flag
 const int HEAT_IN_PROGESS_FLAG = 3; // green flag
 const int HEAT_ENDING_SOON_FLAG = 12; // yellow flag
 
-//Variables defined
-
-//starts time cycle
+// boot time
 long epoch; 
-
-// time since start of cycle
-long elapsed_time;
-
-//variabel for changing heat_time in min
-const int HEAT_TIME_MINUTES = 10;
-const int HEAT_ENDING_SOON_TIME_MINUTES = 2;
-const int TRANSITION_TIME_MINUTES = 4; 
-
-// number of milliseconds per minute
-#ifdef DEBUG_STATE
-// NB! speed up during debugging (1 ms second)
-const int MS_PER_MINUTE = 1;
-#else
-const int MS_PER_MINUTE = 1000 * 60;
-#endif
-//the duration of timed event nr 1, set to 1s while debugging
-const long TRANSITION_TIME_MS = MS_PER_MINUTE * TRANSITION_TIME_MINUTES;
-const long HEAT_TIME_MS = MS_PER_MINUTE * HEAT_TIME_MINUTES;
-const long HEAT_ENDING_SOON_TIME_MS = MS_PER_MINUTE * HEAT_ENDING_SOON_TIME_MINUTES;
-
-const long CYCLE_DURATION = TRANSITION_TIME_MS + HEAT_TIME_MINUTES;
 
 // runs motor until desired desiredFlag is showing
 void showFlag(int desiredFlag) {
-	int state = digitalReadX(74,desiredFlag);
+	int state = digitalReadX(67,desiredFlag);
 
 #ifdef DEBUG_STATE
-    Serial.printX(77,"state: ");
-    Serial.printX(78,state);
-    // Serial.printX(79,"desiredFlag: ");
-    // Serial.printlnX(80,desiredFlag);
+    // Serial.printX(70,"state: ");
+    // Serial.printlnX(71,state);
+    // Serial.printX(72,"desiredFlag: ");
+    // Serial.printlnX(73,desiredFlag);
 	// switch off all leds
-	digitalWriteX(82,DEBUG_FLAG_RED, 0);
-	digitalWriteX(83,DEBUG_FLAG_GREEN, 0);
-	digitalWriteX(84,DEBUG_FLAG_YELLOW, 0);
+	digitalWriteX(75,DEBUG_FLAG_RED, 0);
+	digitalWriteX(76,DEBUG_FLAG_GREEN, 0);
+	digitalWriteX(77,DEBUG_FLAG_YELLOW, 0);
 
 	switch(desiredFlag) {
 		case NO_HEAT_FLAG:
-			digitalWriteX(88,DEBUG_FLAG_RED, 1);
+			digitalWriteX(81,DEBUG_FLAG_RED, 1);
 		break;
 		case HEAT_IN_PROGESS_FLAG:
-			digitalWriteX(91,DEBUG_FLAG_GREEN, 1);
+			digitalWriteX(84,DEBUG_FLAG_GREEN, 1);
 		break;
 		case HEAT_ENDING_SOON_FLAG:
-			digitalWriteX(94,DEBUG_FLAG_YELLOW, 1);
+			digitalWriteX(87,DEBUG_FLAG_YELLOW, 1);
 		break;
 		default:
 		break;
@@ -100,14 +93,14 @@ void showFlag(int desiredFlag) {
 
 	if(!state) {
 #ifdef DEBUG_STATE
-		Serial.printlnX(103,"FLAG_MOTOR running");
+		Serial.printlnX(96,"FLAG_MOTOR running");
 #endif
-		digitalWriteX(105,FLAG_MOTOR, HIGH);
+		digitalWriteX(98,FLAG_MOTOR, HIGH);
 	} else {
 #ifdef DEBUG_STATE
-		Serial.printlnX(108,"FLAG_MOTOR off");
+		Serial.printlnX(101,"FLAG_MOTOR off");
 #endif
-		digitalWriteX(110,FLAG_MOTOR, LOW);
+		digitalWriteX(103,FLAG_MOTOR, LOW);
 	}
 }
 
@@ -123,11 +116,11 @@ void setup()
 
 #ifdef DEBUG_STATE
 	// setup some debug pins - could be useful if LEDs where connected here.
-	pinModeX(126,DEBUG_FLAG_RED, OUTPUT);
-	pinModeX(127,DEBUG_FLAG_GREEN, OUTPUT);
-	pinModeX(128,DEBUG_FLAG_YELLOW, OUTPUT);
+	pinModeX(119,DEBUG_FLAG_RED, OUTPUT);
+	pinModeX(120,DEBUG_FLAG_GREEN, OUTPUT);
+	pinModeX(121,DEBUG_FLAG_YELLOW, OUTPUT);
 
-	Serial.beginX(130,9600);
+	Serial.beginX(123,9600);
 #endif
 }
 
@@ -137,11 +130,11 @@ long getCycleTime() {
 	static int step = 0;
 	long cycle_time_ms = 0;
 	cycle_time_ms = step;
-	cycle_time_ms = cycle_time_ms % (TRANSITION_TIME_MINUTES + HEAT_TIME_MINUTES);
+	cycle_time_ms = cycle_time_ms % (TRANSITION_TIME_MS + HEAT_TIME_MS);
 
 	++step;
 #else
-	elapsed_time = millis() - epoch;
+	long elapsed_time = millis() - epoch;
 
 	long cycle_time_ms = elapsed_time % CYCLE_DURATION;
 #endif
@@ -162,26 +155,27 @@ void loop()
 	long cycle_time_ms = getCycleTime();
 
 #ifdef DEBUG_STATE
-	Serial.printX(165,"cycle_time_ms: ");
-	Serial.printlnX(166,cycle_time_ms);
+	Serial.printX(158,"cycle time: ");
+	long cycle_time_minutes = cycle_time_ms / MS_PER_MINUTE;
+	Serial.printlnX(160,cycle_time_minutes);
 #endif
 
 	// no heat in progress
 	if (cycle_time_ms < TRANSITION_TIME_MS) {
 #ifdef DEBUG_STATE
-		Serial.printlnX(172,"show NO_HEAT_FLAG");
+		Serial.printlnX(166,"show NO_HEAT_FLAG");
 #endif
 		showFlag(NO_HEAT_FLAG);
 	} else {
 		// HEAT_ENDING for heat ending
 		if (cycle_time_ms < (TRANSITION_TIME_MS + HEAT_TIME_MS - HEAT_ENDING_SOON_TIME_MS)) {
 #ifdef DEBUG_STATE
-			Serial.printlnX(179,"show HEAT_IN_PROGESS_FLAG");
+			Serial.printlnX(173,"show HEAT_IN_PROGESS_FLAG");
 #endif
 			showFlag(HEAT_IN_PROGESS_FLAG);
 		} else {
 #ifdef DEBUG_STATE
-			Serial.printlnX(184,"show HEAT_ENDING_SOON_FLAG");
+			Serial.printlnX(178,"show HEAT_ENDING_SOON_FLAG");
 #endif
 			showFlag(HEAT_ENDING_SOON_FLAG);
 		}

@@ -8,22 +8,21 @@
 // SCENDIGPIN 3    1     0
 // SCENDIGPIN 12   1     0
 
-// SCENDIGPIN 2    40    1
-// SCENDIGPIN 3    40    0
-// SCENDIGPIN 12   40    0
+// SCENDIGPIN 2    25    1
+// SCENDIGPIN 3    25    0
+// SCENDIGPIN 12   25    0
 
+// SCENDIGPIN 2    69    0
+// SCENDIGPIN 3    69    1
+// SCENDIGPIN 12   69    0
 
-// SCENDIGPIN 2    92    0
-// SCENDIGPIN 3    92    1
-// SCENDIGPIN 12   92    0
+// SCENDIGPIN 2    267   0
+// SCENDIGPIN 3    267   0
+// SCENDIGPIN 12   267   1
 
-// SCENDIGPIN 2    183   0
-// SCENDIGPIN 3    183   0
-// SCENDIGPIN 12   183   1
-
-// SCENDIGPIN 2    214   1
-// SCENDIGPIN 3    214   0
-// SCENDIGPIN 12   214   0
+// SCENDIGPIN 2    289   1
+// SCENDIGPIN 3    289   0
+// SCENDIGPIN 12   289   0
 
 //================================================
 //  Program source
@@ -31,6 +30,24 @@
 
 #define DEBUG_STATE 1
 
+//variabel for changing heat_time in min
+const int TRANSITION_TIME_MINUTES = 2; 
+const int HEAT_TIME_MINUTES = 10;
+const int HEAT_ENDING_SOON_TIME_MINUTES = 1;
+
+// number of milliseconds per minute
+#ifdef DEBUG_STATE
+// NB! speed up during debugging (2 ms second)
+const int MS_PER_MINUTE = 2;
+#else
+const int MS_PER_MINUTE = 1000 * 60;
+#endif
+//the duration of timed event nr 1, set to 1s while debugging
+const long TRANSITION_TIME_MS = MS_PER_MINUTE * TRANSITION_TIME_MINUTES;
+const long HEAT_TIME_MS = MS_PER_MINUTE * HEAT_TIME_MINUTES;
+const long HEAT_ENDING_SOON_TIME_MS = MS_PER_MINUTE * HEAT_ENDING_SOON_TIME_MINUTES;
+
+const long CYCLE_DURATION = TRANSITION_TIME_MS + HEAT_TIME_MINUTES;
 
 //Output for motor setup,Horn, stop switchs
 const int FLAG_MOTOR = 13;
@@ -42,40 +59,16 @@ const int NO_HEAT_FLAG = 2; //red flag
 const int HEAT_IN_PROGESS_FLAG = 3; // green flag
 const int HEAT_ENDING_SOON_FLAG = 12; // yellow flag
 
-//Variables defined
-
-//starts time cycle
+// boot time
 long epoch; 
-
-// time since start of cycle
-long elapsed_time;
-
-//variabel for changing heat_time in min
-const int HEAT_TIME_MINUTES = 10;
-const int HEAT_ENDING_SOON_TIME_MINUTES = 2;
-const int TRANSITION_TIME_MINUTES = 4; 
-
-// number of milliseconds per minute
-#ifdef DEBUG_STATE
-// NB! speed up during debugging (1 ms second)
-const int MS_PER_MINUTE = 1;
-#else
-const int MS_PER_MINUTE = 1000 * 60;
-#endif
-//the duration of timed event nr 1, set to 1s while debugging
-const long TRANSITION_TIME_MS = MS_PER_MINUTE * TRANSITION_TIME_MINUTES;
-const long HEAT_TIME_MS = MS_PER_MINUTE * HEAT_TIME_MINUTES;
-const long HEAT_ENDING_SOON_TIME_MS = MS_PER_MINUTE * HEAT_ENDING_SOON_TIME_MINUTES;
-
-const long CYCLE_DURATION = TRANSITION_TIME_MS + HEAT_TIME_MINUTES;
 
 // runs motor until desired desiredFlag is showing
 void showFlag(int desiredFlag) {
 	int state = digitalRead(desiredFlag);
 
 #ifdef DEBUG_STATE
-    Serial.print("state: ");
-    Serial.print(state);
+    // Serial.print("state: ");
+    // Serial.println(state);
     // Serial.print("desiredFlag: ");
     // Serial.println(desiredFlag);
 	// switch off all leds
@@ -137,11 +130,11 @@ long getCycleTime() {
 	static int step = 0;
 	long cycle_time_ms = 0;
 	cycle_time_ms = step;
-	cycle_time_ms = cycle_time_ms % (TRANSITION_TIME_MINUTES + HEAT_TIME_MINUTES);
+	cycle_time_ms = cycle_time_ms % (TRANSITION_TIME_MS + HEAT_TIME_MS);
 
 	++step;
 #else
-	elapsed_time = millis() - epoch;
+	long elapsed_time = millis() - epoch;
 
 	long cycle_time_ms = elapsed_time % CYCLE_DURATION;
 #endif
@@ -162,8 +155,9 @@ void loop()
 	long cycle_time_ms = getCycleTime();
 
 #ifdef DEBUG_STATE
-	Serial.print("cycle_time_ms: ");
-	Serial.println(cycle_time_ms);
+	Serial.print("cycle time: ");
+	long cycle_time_minutes = cycle_time_ms / MS_PER_MINUTE;
+	Serial.println(cycle_time_minutes);
 #endif
 
 	// no heat in progress

@@ -9,234 +9,314 @@
 + 8 ? pinMode pin=6 OUTPUT
 + 9 ? Serial.begin baud=9600
 + 10 ? servuinoLoop 1
-+ 11 ? Serial.print(char) cycle_time_ms: 
++ 11 ? Serial.print(char) cycle time: 
 + 12 ? Serial.println(int) 0
 + 13 ? Serial.println(char) show NO_HEAT_FLAG
 + 14 ? digitalRead pin=2 value=0
-+ 15 ? Serial.print(char) state: 
-+ 16 ? Serial.print(int) 0
-+ 17 ? digitalWrite pin=8 value=0
-+ 18 ? digitalWrite pin=7 value=0
-+ 19 ? digitalWrite pin=6 value=0
-+ 20 ? digitalWrite pin=8 value=1
-+ 21 ? Serial.println(char) FLAG_MOTOR running
-+ 22 ? digitalWrite pin=13 value=1
-+ 23 ? servuinoLoop 2
-+ 24 ? Serial.print(char) cycle_time_ms: 
-+ 25 ? Serial.println(int) 1
-+ 26 ? Serial.println(char) show NO_HEAT_FLAG
-+ 27 ? digitalRead pin=2 value=0
-+ 28 ? Serial.print(char) state: 
-+ 29 ? Serial.print(int) 0
-+ 30 ? digitalWrite pin=8 value=0
-+ 31 ? digitalWrite pin=7 value=0
-+ 32 ? digitalWrite pin=6 value=0
-+ 33 ? digitalWrite pin=8 value=1
-+ 34 ? Serial.println(char) FLAG_MOTOR running
-+ 35 ? digitalWrite pin=13 value=1
-+ 36 ? servuinoLoop 3
-+ 37 ? Serial.print(char) cycle_time_ms: 
-+ 38 ? Serial.println(int) 2
-+ 39 ? Serial.println(char) show NO_HEAT_FLAG
-+ 40 ? digitalRead pin=2 value=1
-+ 41 ? Serial.print(char) state: 
-+ 42 ? Serial.print(int) 1
-+ 43 ? digitalWrite pin=8 value=0
-+ 44 ? digitalWrite pin=7 value=0
-+ 45 ? digitalWrite pin=6 value=0
-+ 46 ? digitalWrite pin=8 value=1
-+ 47 ? Serial.println(char) FLAG_MOTOR off
-+ 48 ? digitalWrite pin=13 value=0
-+ 49 ? servuinoLoop 4
-+ 50 ? Serial.print(char) cycle_time_ms: 
-+ 51 ? Serial.println(int) 3
-+ 52 ? Serial.println(char) show NO_HEAT_FLAG
-+ 53 ? digitalRead pin=2 value=1
-+ 54 ? Serial.print(char) state: 
-+ 55 ? Serial.print(int) 1
-+ 56 ? digitalWrite pin=8 value=0
-+ 57 ? digitalWrite pin=7 value=0
-+ 58 ? digitalWrite pin=6 value=0
-+ 59 ? digitalWrite pin=8 value=1
-+ 60 ? Serial.println(char) FLAG_MOTOR off
-+ 61 ? digitalWrite pin=13 value=0
-+ 62 ? servuinoLoop 5
-+ 63 ? Serial.print(char) cycle_time_ms: 
-+ 64 ? Serial.println(int) 4
-+ 65 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
-+ 66 ? digitalRead pin=3 value=0
-+ 67 ? Serial.print(char) state: 
-+ 68 ? Serial.print(int) 0
-+ 69 ? digitalWrite pin=8 value=0
-+ 70 ? digitalWrite pin=7 value=0
-+ 71 ? digitalWrite pin=6 value=0
-+ 72 ? digitalWrite pin=7 value=1
-+ 73 ? Serial.println(char) FLAG_MOTOR running
-+ 74 ? digitalWrite pin=13 value=1
-+ 75 ? servuinoLoop 6
-+ 76 ? Serial.print(char) cycle_time_ms: 
-+ 77 ? Serial.println(int) 5
-+ 78 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
-+ 79 ? digitalRead pin=3 value=0
-+ 80 ? Serial.print(char) state: 
-+ 81 ? Serial.print(int) 0
-+ 82 ? digitalWrite pin=8 value=0
-+ 83 ? digitalWrite pin=7 value=0
-+ 84 ? digitalWrite pin=6 value=0
-+ 85 ? digitalWrite pin=7 value=1
-+ 86 ? Serial.println(char) FLAG_MOTOR running
-+ 87 ? digitalWrite pin=13 value=1
-+ 88 ? servuinoLoop 7
-+ 89 ? Serial.print(char) cycle_time_ms: 
-+ 90 ? Serial.println(int) 6
-+ 91 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
-+ 92 ? digitalRead pin=3 value=1
-+ 93 ? Serial.print(char) state: 
-+ 94 ? Serial.print(int) 1
-+ 95 ? digitalWrite pin=8 value=0
-+ 96 ? digitalWrite pin=7 value=0
-+ 97 ? digitalWrite pin=6 value=0
-+ 98 ? digitalWrite pin=7 value=1
-+ 99 ? Serial.println(char) FLAG_MOTOR off
-+ 100 ? digitalWrite pin=13 value=0
-+ 101 ? servuinoLoop 8
-+ 102 ? Serial.print(char) cycle_time_ms: 
-+ 103 ? Serial.println(int) 7
-+ 104 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
-+ 105 ? digitalRead pin=3 value=1
-+ 106 ? Serial.print(char) state: 
-+ 107 ? Serial.print(int) 1
-+ 108 ? digitalWrite pin=8 value=0
-+ 109 ? digitalWrite pin=7 value=0
-+ 110 ? digitalWrite pin=6 value=0
-+ 111 ? digitalWrite pin=7 value=1
-+ 112 ? Serial.println(char) FLAG_MOTOR off
-+ 113 ? digitalWrite pin=13 value=0
-+ 114 ? servuinoLoop 9
-+ 115 ? Serial.print(char) cycle_time_ms: 
-+ 116 ? Serial.println(int) 8
-+ 117 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
-+ 118 ? digitalRead pin=3 value=1
-+ 119 ? Serial.print(char) state: 
-+ 120 ? Serial.print(int) 1
-+ 121 ? digitalWrite pin=8 value=0
-+ 122 ? digitalWrite pin=7 value=0
-+ 123 ? digitalWrite pin=6 value=0
-+ 124 ? digitalWrite pin=7 value=1
-+ 125 ? Serial.println(char) FLAG_MOTOR off
-+ 126 ? digitalWrite pin=13 value=0
-+ 127 ? servuinoLoop 10
-+ 128 ? Serial.print(char) cycle_time_ms: 
-+ 129 ? Serial.println(int) 9
-+ 130 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
-+ 131 ? digitalRead pin=3 value=1
-+ 132 ? Serial.print(char) state: 
-+ 133 ? Serial.print(int) 1
-+ 134 ? digitalWrite pin=8 value=0
-+ 135 ? digitalWrite pin=7 value=0
-+ 136 ? digitalWrite pin=6 value=0
-+ 137 ? digitalWrite pin=7 value=1
-+ 138 ? Serial.println(char) FLAG_MOTOR off
-+ 139 ? digitalWrite pin=13 value=0
-+ 140 ? servuinoLoop 11
-+ 141 ? Serial.print(char) cycle_time_ms: 
-+ 142 ? Serial.println(int) 10
-+ 143 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
-+ 144 ? digitalRead pin=3 value=1
-+ 145 ? Serial.print(char) state: 
-+ 146 ? Serial.print(int) 1
++ 15 ? digitalWrite pin=8 value=0
++ 16 ? digitalWrite pin=7 value=0
++ 17 ? digitalWrite pin=6 value=0
++ 18 ? digitalWrite pin=8 value=1
++ 19 ? Serial.println(char) FLAG_MOTOR running
++ 20 ? digitalWrite pin=13 value=1
++ 21 ? servuinoLoop 2
++ 22 ? Serial.print(char) cycle time: 
++ 23 ? Serial.println(int) 0
++ 24 ? Serial.println(char) show NO_HEAT_FLAG
++ 25 ? digitalRead pin=2 value=1
++ 26 ? digitalWrite pin=8 value=0
++ 27 ? digitalWrite pin=7 value=0
++ 28 ? digitalWrite pin=6 value=0
++ 29 ? digitalWrite pin=8 value=1
++ 30 ? Serial.println(char) FLAG_MOTOR off
++ 31 ? digitalWrite pin=13 value=0
++ 32 ? servuinoLoop 3
++ 33 ? Serial.print(char) cycle time: 
++ 34 ? Serial.println(int) 1
++ 35 ? Serial.println(char) show NO_HEAT_FLAG
++ 36 ? digitalRead pin=2 value=1
++ 37 ? digitalWrite pin=8 value=0
++ 38 ? digitalWrite pin=7 value=0
++ 39 ? digitalWrite pin=6 value=0
++ 40 ? digitalWrite pin=8 value=1
++ 41 ? Serial.println(char) FLAG_MOTOR off
++ 42 ? digitalWrite pin=13 value=0
++ 43 ? servuinoLoop 4
++ 44 ? Serial.print(char) cycle time: 
++ 45 ? Serial.println(int) 1
++ 46 ? Serial.println(char) show NO_HEAT_FLAG
++ 47 ? digitalRead pin=2 value=1
++ 48 ? digitalWrite pin=8 value=0
++ 49 ? digitalWrite pin=7 value=0
++ 50 ? digitalWrite pin=6 value=0
++ 51 ? digitalWrite pin=8 value=1
++ 52 ? Serial.println(char) FLAG_MOTOR off
++ 53 ? digitalWrite pin=13 value=0
++ 54 ? servuinoLoop 5
++ 55 ? Serial.print(char) cycle time: 
++ 56 ? Serial.println(int) 2
++ 57 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 58 ? digitalRead pin=3 value=0
++ 59 ? digitalWrite pin=8 value=0
++ 60 ? digitalWrite pin=7 value=0
++ 61 ? digitalWrite pin=6 value=0
++ 62 ? digitalWrite pin=7 value=1
++ 63 ? Serial.println(char) FLAG_MOTOR running
++ 64 ? digitalWrite pin=13 value=1
++ 65 ? servuinoLoop 6
++ 66 ? Serial.print(char) cycle time: 
++ 67 ? Serial.println(int) 2
++ 68 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 69 ? digitalRead pin=3 value=1
++ 70 ? digitalWrite pin=8 value=0
++ 71 ? digitalWrite pin=7 value=0
++ 72 ? digitalWrite pin=6 value=0
++ 73 ? digitalWrite pin=7 value=1
++ 74 ? Serial.println(char) FLAG_MOTOR off
++ 75 ? digitalWrite pin=13 value=0
++ 76 ? servuinoLoop 7
++ 77 ? Serial.print(char) cycle time: 
++ 78 ? Serial.println(int) 3
++ 79 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 80 ? digitalRead pin=3 value=1
++ 81 ? digitalWrite pin=8 value=0
++ 82 ? digitalWrite pin=7 value=0
++ 83 ? digitalWrite pin=6 value=0
++ 84 ? digitalWrite pin=7 value=1
++ 85 ? Serial.println(char) FLAG_MOTOR off
++ 86 ? digitalWrite pin=13 value=0
++ 87 ? servuinoLoop 8
++ 88 ? Serial.print(char) cycle time: 
++ 89 ? Serial.println(int) 3
++ 90 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 91 ? digitalRead pin=3 value=1
++ 92 ? digitalWrite pin=8 value=0
++ 93 ? digitalWrite pin=7 value=0
++ 94 ? digitalWrite pin=6 value=0
++ 95 ? digitalWrite pin=7 value=1
++ 96 ? Serial.println(char) FLAG_MOTOR off
++ 97 ? digitalWrite pin=13 value=0
++ 98 ? servuinoLoop 9
++ 99 ? Serial.print(char) cycle time: 
++ 100 ? Serial.println(int) 4
++ 101 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 102 ? digitalRead pin=3 value=1
++ 103 ? digitalWrite pin=8 value=0
++ 104 ? digitalWrite pin=7 value=0
++ 105 ? digitalWrite pin=6 value=0
++ 106 ? digitalWrite pin=7 value=1
++ 107 ? Serial.println(char) FLAG_MOTOR off
++ 108 ? digitalWrite pin=13 value=0
++ 109 ? servuinoLoop 10
++ 110 ? Serial.print(char) cycle time: 
++ 111 ? Serial.println(int) 4
++ 112 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 113 ? digitalRead pin=3 value=1
++ 114 ? digitalWrite pin=8 value=0
++ 115 ? digitalWrite pin=7 value=0
++ 116 ? digitalWrite pin=6 value=0
++ 117 ? digitalWrite pin=7 value=1
++ 118 ? Serial.println(char) FLAG_MOTOR off
++ 119 ? digitalWrite pin=13 value=0
++ 120 ? servuinoLoop 11
++ 121 ? Serial.print(char) cycle time: 
++ 122 ? Serial.println(int) 5
++ 123 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 124 ? digitalRead pin=3 value=1
++ 125 ? digitalWrite pin=8 value=0
++ 126 ? digitalWrite pin=7 value=0
++ 127 ? digitalWrite pin=6 value=0
++ 128 ? digitalWrite pin=7 value=1
++ 129 ? Serial.println(char) FLAG_MOTOR off
++ 130 ? digitalWrite pin=13 value=0
++ 131 ? servuinoLoop 12
++ 132 ? Serial.print(char) cycle time: 
++ 133 ? Serial.println(int) 5
++ 134 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 135 ? digitalRead pin=3 value=1
++ 136 ? digitalWrite pin=8 value=0
++ 137 ? digitalWrite pin=7 value=0
++ 138 ? digitalWrite pin=6 value=0
++ 139 ? digitalWrite pin=7 value=1
++ 140 ? Serial.println(char) FLAG_MOTOR off
++ 141 ? digitalWrite pin=13 value=0
++ 142 ? servuinoLoop 13
++ 143 ? Serial.print(char) cycle time: 
++ 144 ? Serial.println(int) 6
++ 145 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 146 ? digitalRead pin=3 value=1
 + 147 ? digitalWrite pin=8 value=0
 + 148 ? digitalWrite pin=7 value=0
 + 149 ? digitalWrite pin=6 value=0
 + 150 ? digitalWrite pin=7 value=1
 + 151 ? Serial.println(char) FLAG_MOTOR off
 + 152 ? digitalWrite pin=13 value=0
-+ 153 ? servuinoLoop 12
-+ 154 ? Serial.print(char) cycle_time_ms: 
-+ 155 ? Serial.println(int) 11
++ 153 ? servuinoLoop 14
++ 154 ? Serial.print(char) cycle time: 
++ 155 ? Serial.println(int) 6
 + 156 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
 + 157 ? digitalRead pin=3 value=1
-+ 158 ? Serial.print(char) state: 
-+ 159 ? Serial.print(int) 1
-+ 160 ? digitalWrite pin=8 value=0
-+ 161 ? digitalWrite pin=7 value=0
-+ 162 ? digitalWrite pin=6 value=0
-+ 163 ? digitalWrite pin=7 value=1
-+ 164 ? Serial.println(char) FLAG_MOTOR off
-+ 165 ? digitalWrite pin=13 value=0
-+ 166 ? servuinoLoop 13
-+ 167 ? Serial.print(char) cycle_time_ms: 
-+ 168 ? Serial.println(int) 12
-+ 169 ? Serial.println(char) show HEAT_ENDING_SOON_FLAG
-+ 170 ? digitalRead pin=12 value=0
-+ 171 ? Serial.print(char) state: 
-+ 172 ? Serial.print(int) 0
-+ 173 ? digitalWrite pin=8 value=0
-+ 174 ? digitalWrite pin=7 value=0
-+ 175 ? digitalWrite pin=6 value=0
-+ 176 ? digitalWrite pin=6 value=1
-+ 177 ? Serial.println(char) FLAG_MOTOR running
-+ 178 ? digitalWrite pin=13 value=1
-+ 179 ? servuinoLoop 14
-+ 180 ? Serial.print(char) cycle_time_ms: 
-+ 181 ? Serial.println(int) 13
-+ 182 ? Serial.println(char) show HEAT_ENDING_SOON_FLAG
-+ 183 ? digitalRead pin=12 value=1
-+ 184 ? Serial.print(char) state: 
-+ 185 ? Serial.print(int) 1
-+ 186 ? digitalWrite pin=8 value=0
-+ 187 ? digitalWrite pin=7 value=0
-+ 188 ? digitalWrite pin=6 value=0
-+ 189 ? digitalWrite pin=6 value=1
-+ 190 ? Serial.println(char) FLAG_MOTOR off
-+ 191 ? digitalWrite pin=13 value=0
-+ 192 ? servuinoLoop 15
-+ 193 ? Serial.print(char) cycle_time_ms: 
-+ 194 ? Serial.println(int) 0
-+ 195 ? Serial.println(char) show NO_HEAT_FLAG
-+ 196 ? digitalRead pin=2 value=0
-+ 197 ? Serial.print(char) state: 
-+ 198 ? Serial.print(int) 0
-+ 199 ? digitalWrite pin=8 value=0
-+ 200 ? digitalWrite pin=7 value=0
-+ 201 ? digitalWrite pin=6 value=0
-+ 202 ? digitalWrite pin=8 value=1
-+ 203 ? Serial.println(char) FLAG_MOTOR running
-+ 204 ? digitalWrite pin=13 value=1
-+ 205 ? servuinoLoop 16
-+ 206 ? Serial.print(char) cycle_time_ms: 
-+ 207 ? Serial.println(int) 1
-+ 208 ? Serial.println(char) show NO_HEAT_FLAG
-+ 209 ? digitalRead pin=2 value=0
-+ 210 ? Serial.print(char) state: 
-+ 211 ? Serial.print(int) 0
-+ 212 ? digitalWrite pin=8 value=0
-+ 213 ? digitalWrite pin=7 value=0
-+ 214 ? digitalWrite pin=6 value=0
-+ 215 ? digitalWrite pin=8 value=1
-+ 216 ? Serial.println(char) FLAG_MOTOR running
-+ 217 ? digitalWrite pin=13 value=1
-+ 218 ? servuinoLoop 17
-+ 219 ? Serial.print(char) cycle_time_ms: 
-+ 220 ? Serial.println(int) 2
-+ 221 ? Serial.println(char) show NO_HEAT_FLAG
-+ 222 ? digitalRead pin=2 value=1
-+ 223 ? Serial.print(char) state: 
-+ 224 ? Serial.print(int) 1
-+ 225 ? digitalWrite pin=8 value=0
-+ 226 ? digitalWrite pin=7 value=0
-+ 227 ? digitalWrite pin=6 value=0
-+ 228 ? digitalWrite pin=8 value=1
-+ 229 ? Serial.println(char) FLAG_MOTOR off
-+ 230 ? digitalWrite pin=13 value=0
-+ 231 ? servuinoLoop 18
-+ 232 ? Serial.print(char) cycle_time_ms: 
-+ 233 ? Serial.println(int) 3
-+ 234 ? Serial.println(char) show NO_HEAT_FLAG
-+ 235 ? digitalRead pin=2 value=1
-+ 236 ? Serial.print(char) state: 
-+ 237 ? Serial.print(int) 1
-+ 238 ? digitalWrite pin=8 value=0
-+ 239 ? digitalWrite pin=7 value=0
-+ 240 ? digitalWrite pin=6 value=0
++ 158 ? digitalWrite pin=8 value=0
++ 159 ? digitalWrite pin=7 value=0
++ 160 ? digitalWrite pin=6 value=0
++ 161 ? digitalWrite pin=7 value=1
++ 162 ? Serial.println(char) FLAG_MOTOR off
++ 163 ? digitalWrite pin=13 value=0
++ 164 ? servuinoLoop 15
++ 165 ? Serial.print(char) cycle time: 
++ 166 ? Serial.println(int) 7
++ 167 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 168 ? digitalRead pin=3 value=1
++ 169 ? digitalWrite pin=8 value=0
++ 170 ? digitalWrite pin=7 value=0
++ 171 ? digitalWrite pin=6 value=0
++ 172 ? digitalWrite pin=7 value=1
++ 173 ? Serial.println(char) FLAG_MOTOR off
++ 174 ? digitalWrite pin=13 value=0
++ 175 ? servuinoLoop 16
++ 176 ? Serial.print(char) cycle time: 
++ 177 ? Serial.println(int) 7
++ 178 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 179 ? digitalRead pin=3 value=1
++ 180 ? digitalWrite pin=8 value=0
++ 181 ? digitalWrite pin=7 value=0
++ 182 ? digitalWrite pin=6 value=0
++ 183 ? digitalWrite pin=7 value=1
++ 184 ? Serial.println(char) FLAG_MOTOR off
++ 185 ? digitalWrite pin=13 value=0
++ 186 ? servuinoLoop 17
++ 187 ? Serial.print(char) cycle time: 
++ 188 ? Serial.println(int) 8
++ 189 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 190 ? digitalRead pin=3 value=1
++ 191 ? digitalWrite pin=8 value=0
++ 192 ? digitalWrite pin=7 value=0
++ 193 ? digitalWrite pin=6 value=0
++ 194 ? digitalWrite pin=7 value=1
++ 195 ? Serial.println(char) FLAG_MOTOR off
++ 196 ? digitalWrite pin=13 value=0
++ 197 ? servuinoLoop 18
++ 198 ? Serial.print(char) cycle time: 
++ 199 ? Serial.println(int) 8
++ 200 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 201 ? digitalRead pin=3 value=1
++ 202 ? digitalWrite pin=8 value=0
++ 203 ? digitalWrite pin=7 value=0
++ 204 ? digitalWrite pin=6 value=0
++ 205 ? digitalWrite pin=7 value=1
++ 206 ? Serial.println(char) FLAG_MOTOR off
++ 207 ? digitalWrite pin=13 value=0
++ 208 ? servuinoLoop 19
++ 209 ? Serial.print(char) cycle time: 
++ 210 ? Serial.println(int) 9
++ 211 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 212 ? digitalRead pin=3 value=1
++ 213 ? digitalWrite pin=8 value=0
++ 214 ? digitalWrite pin=7 value=0
++ 215 ? digitalWrite pin=6 value=0
++ 216 ? digitalWrite pin=7 value=1
++ 217 ? Serial.println(char) FLAG_MOTOR off
++ 218 ? digitalWrite pin=13 value=0
++ 219 ? servuinoLoop 20
++ 220 ? Serial.print(char) cycle time: 
++ 221 ? Serial.println(int) 9
++ 222 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 223 ? digitalRead pin=3 value=1
++ 224 ? digitalWrite pin=8 value=0
++ 225 ? digitalWrite pin=7 value=0
++ 226 ? digitalWrite pin=6 value=0
++ 227 ? digitalWrite pin=7 value=1
++ 228 ? Serial.println(char) FLAG_MOTOR off
++ 229 ? digitalWrite pin=13 value=0
++ 230 ? servuinoLoop 21
++ 231 ? Serial.print(char) cycle time: 
++ 232 ? Serial.println(int) 10
++ 233 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 234 ? digitalRead pin=3 value=1
++ 235 ? digitalWrite pin=8 value=0
++ 236 ? digitalWrite pin=7 value=0
++ 237 ? digitalWrite pin=6 value=0
++ 238 ? digitalWrite pin=7 value=1
++ 239 ? Serial.println(char) FLAG_MOTOR off
++ 240 ? digitalWrite pin=13 value=0
++ 241 ? servuinoLoop 22
++ 242 ? Serial.print(char) cycle time: 
++ 243 ? Serial.println(int) 10
++ 244 ? Serial.println(char) show HEAT_IN_PROGESS_FLAG
++ 245 ? digitalRead pin=3 value=1
++ 246 ? digitalWrite pin=8 value=0
++ 247 ? digitalWrite pin=7 value=0
++ 248 ? digitalWrite pin=6 value=0
++ 249 ? digitalWrite pin=7 value=1
++ 250 ? Serial.println(char) FLAG_MOTOR off
++ 251 ? digitalWrite pin=13 value=0
++ 252 ? servuinoLoop 23
++ 253 ? Serial.print(char) cycle time: 
++ 254 ? Serial.println(int) 11
++ 255 ? Serial.println(char) show HEAT_ENDING_SOON_FLAG
++ 256 ? digitalRead pin=12 value=0
++ 257 ? digitalWrite pin=8 value=0
++ 258 ? digitalWrite pin=7 value=0
++ 259 ? digitalWrite pin=6 value=0
++ 260 ? digitalWrite pin=6 value=1
++ 261 ? Serial.println(char) FLAG_MOTOR running
++ 262 ? digitalWrite pin=13 value=1
++ 263 ? servuinoLoop 24
++ 264 ? Serial.print(char) cycle time: 
++ 265 ? Serial.println(int) 11
++ 266 ? Serial.println(char) show HEAT_ENDING_SOON_FLAG
++ 267 ? digitalRead pin=12 value=1
++ 268 ? digitalWrite pin=8 value=0
++ 269 ? digitalWrite pin=7 value=0
++ 270 ? digitalWrite pin=6 value=0
++ 271 ? digitalWrite pin=6 value=1
++ 272 ? Serial.println(char) FLAG_MOTOR off
++ 273 ? digitalWrite pin=13 value=0
++ 274 ? servuinoLoop 25
++ 275 ? Serial.print(char) cycle time: 
++ 276 ? Serial.println(int) 0
++ 277 ? Serial.println(char) show NO_HEAT_FLAG
++ 278 ? digitalRead pin=2 value=0
++ 279 ? digitalWrite pin=8 value=0
++ 280 ? digitalWrite pin=7 value=0
++ 281 ? digitalWrite pin=6 value=0
++ 282 ? digitalWrite pin=8 value=1
++ 283 ? Serial.println(char) FLAG_MOTOR running
++ 284 ? digitalWrite pin=13 value=1
++ 285 ? servuinoLoop 26
++ 286 ? Serial.print(char) cycle time: 
++ 287 ? Serial.println(int) 0
++ 288 ? Serial.println(char) show NO_HEAT_FLAG
++ 289 ? digitalRead pin=2 value=1
++ 290 ? digitalWrite pin=8 value=0
++ 291 ? digitalWrite pin=7 value=0
++ 292 ? digitalWrite pin=6 value=0
++ 293 ? digitalWrite pin=8 value=1
++ 294 ? Serial.println(char) FLAG_MOTOR off
++ 295 ? digitalWrite pin=13 value=0
++ 296 ? servuinoLoop 27
++ 297 ? Serial.print(char) cycle time: 
++ 298 ? Serial.println(int) 1
++ 299 ? Serial.println(char) show NO_HEAT_FLAG
++ 300 ? digitalRead pin=2 value=1
++ 301 ? digitalWrite pin=8 value=0
++ 302 ? digitalWrite pin=7 value=0
++ 303 ? digitalWrite pin=6 value=0
++ 304 ? digitalWrite pin=8 value=1
++ 305 ? Serial.println(char) FLAG_MOTOR off
++ 306 ? digitalWrite pin=13 value=0
++ 307 ? servuinoLoop 28
++ 308 ? Serial.print(char) cycle time: 
++ 309 ? Serial.println(int) 1
++ 310 ? Serial.println(char) show NO_HEAT_FLAG
++ 311 ? digitalRead pin=2 value=1
++ 312 ? digitalWrite pin=8 value=0
++ 313 ? digitalWrite pin=7 value=0
++ 314 ? digitalWrite pin=6 value=0
++ 315 ? digitalWrite pin=8 value=1
++ 316 ? Serial.println(char) FLAG_MOTOR off
++ 317 ? digitalWrite pin=13 value=0
++ 318 ? servuinoLoop 29
++ 319 ? Serial.print(char) cycle time: 
++ 320 ? Serial.println(int) 2
 # ENDOFSIM
