@@ -28,12 +28,17 @@
 //  Program source
 //================================================
 
-#define DEBUG_STATE 1
+// CONFIGURATION Section =========================
+
+// uncomment this line to single step in simuino simulator
+//#define DEBUG_STATE 1
 
 //variabel for changing heat_time in min
 const int TRANSITION_TIME_MINUTES = 2; 
 const int HEAT_TIME_MINUTES = 10;
 const int HEAT_ENDING_SOON_TIME_MINUTES = 1;
+
+// END OF CONFIGURATION ==========================
 
 // number of milliseconds per minute
 #ifdef DEBUG_STATE
