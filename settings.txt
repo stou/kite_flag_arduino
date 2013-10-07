@@ -1,2 +1,2 @@
-# Simuino Setting Fri Feb 17 05:23:22 2012
-PROJECT: test_uno.conf
+# Simuino Setting Mon Oct  7 01:02:49 2013
+PROJECT: kite_flag.conf
