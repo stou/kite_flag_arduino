@@ -152,13 +152,20 @@ int read_buttons()
 // depending on which button was pushed, we perform an action
 void handle_buttons(int lcdKey)
 {
+  static int lastButton;
+
+  if(lastButton == lcdKey) {
+  	return;
+  }
+  lastButton = lcdKey;
+
   switch (lcdKey){
-  case BUTTON_RIGHT:
-    heatNumber++;
-    break;
-  case BUTTON_LEFT:
-    heatNumber--;
-    break;
+  // case BUTTON_RIGHT:
+  //   heatNumber++;
+  //   break;
+  // case BUTTON_LEFT:
+  //   heatNumber--;
+  //   break;
   case BUTTON_UP:
     heatTimeMinutes++;
     break;
