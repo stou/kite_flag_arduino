@@ -103,7 +103,7 @@ int update_display(long cycle_time_ms)
 
   lcd.setCursor(0, 0);
   lcd.print(heatTimeMinutes);
-  
+
   lcd.setCursor(15, 1);
   lcd.print(seconds % 10);
   lcd.setCursor(14, 1);
@@ -242,12 +242,12 @@ long getCycleTime() {
   static int step = 0;
   long cycle_time_ms = 0;
   cycle_time_ms = step;
-  cycle_time_ms = cycle_time_ms % CYCLE_DURATION_MS;
+  cycle_time_ms = cycle_time_ms % ((TRANSITION_TIME_MINUTES + heatTimeMinutes) * MS_PER_MINUTE);
   
   ++step;
 #else
   long elapsed_time = millis() - epoch;
-  long cycle_time_ms = elapsed_time % CYCLE_DURATION_MS;
+  long cycle_time_ms = elapsed_time % ((TRANSITION_TIME_MINUTES + heatTimeMinutes) * MS_PER_MINUTE);
 #endif
   return cycle_time_ms;
 }
