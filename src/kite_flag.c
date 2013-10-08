@@ -104,11 +104,20 @@ int update_display(long cycle_time_ms)
   // TODO update the contents on the real display
 	  // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
+
+  long seconds = cycle_time_ms/1000 % 60;
+  long minutes = cycle_time_ms/1000/60;
+
+
   lcd.setCursor(0, 0);
   lcd.print("cycle time S");
-  lcd.setCursor(0, 1);
+  lcd.setCursor(15, 1);
   // print the number of seconds since cycle started
-  lcd.print(cycle_time_ms/1000);
+  lcd.print(seconds);
+  lcd.setCursor(13, 1);
+  lcd.print(":");
+  lcd.setCursor(12, 1);
+  lcd.print(minutes);
 
 #else
   // TODO show display contents on serial interface
@@ -228,9 +237,7 @@ void setup()
   lcd.begin(16, 2);
 #endif
   
-#ifdef DEBUG_STATE
   Serial.begin(9600);
-#endif
 }
 
 
