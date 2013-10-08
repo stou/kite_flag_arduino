@@ -48,7 +48,7 @@ const long HEAT_ENDING_SOON_TIME_MINUTES = 1;
 // NB! speed up during debugging (2 ms second)
 const long MS_PER_MINUTE = 2;
 #else
-const long MS_PER_MINUTE = 1000 * 60;
+const long MS_PER_MINUTE = 60000;
 #endif
 
 //Output for motor setup,Horn, stop switchs
@@ -178,8 +178,19 @@ void handle_buttons(int lcdKey)
 
 // runs motor until desired desiredFlag is showing
 void showFlag(int desiredFlag) {
+
+  static int flagPosition;
+  int runMotor = (flagPosition != desiredFlag);
+
   int state = digitalRead(desiredFlag);
-  
+#ifdef DEBUG_STATE
+  Serial.print("s: ");
+  Serial.print(state);
+  Serial.print(runMotor);
+  Serial.print(" ");
+  Serial.println(desiredFlag);
+#endif
+
   switch(desiredFlag) {
   case NO_HEAT_FLAG:
     digitalWrite(LED_FLAG_RED, HIGH);
@@ -200,7 +211,7 @@ void showFlag(int desiredFlag) {
     break;
   }
   
-  if(state) {
+  if(runMotor && state) {
 #ifdef DEBUG_STATE
     Serial.println("FLAG_MOTOR running");
 #endif
@@ -209,6 +220,7 @@ void showFlag(int desiredFlag) {
 #ifdef DEBUG_STATE
     Serial.println("FLAG_MOTOR off");
 #endif
+    flagPosition = desiredFlag;
     digitalWrite(FLAG_MOTOR, LOW);
   }
 }
