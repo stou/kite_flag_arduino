@@ -56,7 +56,7 @@ const long TRANSITION_TIME_MS = MS_PER_MINUTE * TRANSITION_TIME_MINUTES;
 const long HEAT_TIME_MS = MS_PER_MINUTE * HEAT_TIME_MINUTES;
 const long HEAT_ENDING_SOON_TIME_MS = MS_PER_MINUTE * HEAT_ENDING_SOON_TIME_MINUTES;
 
-const long CYCLE_DURATION = TRANSITION_TIME_MS + HEAT_TIME_MINUTES;
+const long CYCLE_DURATION_MS = TRANSITION_TIME_MS + HEAT_TIME_MS;
 
 //Output for motor setup,Horn, stop switchs
 const int FLAG_MOTOR = 13;
@@ -252,7 +252,7 @@ long getCycleTime() {
 #else
   long elapsed_time = millis() - epoch;
   
-  long cycle_time_ms = elapsed_time % CYCLE_DURATION;
+  long cycle_time_ms = elapsed_time % CYCLE_DURATION_MS;
 #endif
   return cycle_time_ms;
 }
