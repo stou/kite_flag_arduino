@@ -38,18 +38,18 @@
 #endif
 
 //variabel for changing heat_time in min
-const int TRANSITION_TIME_MINUTES = 2; 
-const int HEAT_TIME_MINUTES = 10;
-const int HEAT_ENDING_SOON_TIME_MINUTES = 1;
+const long TRANSITION_TIME_MINUTES = 2; 
+const long HEAT_TIME_MINUTES = 10;
+const long HEAT_ENDING_SOON_TIME_MINUTES = 1;
 
 // END OF CONFIGURATION ==========================
 
 // number of milliseconds per minute
 #ifdef DEBUG_STATE
 // NB! speed up during debugging (2 ms second)
-const int MS_PER_MINUTE = 2;
+const long MS_PER_MINUTE = 2;
 #else
-const int MS_PER_MINUTE = 1000 * 60;
+const long MS_PER_MINUTE = 1000 * 60;
 #endif
 //the duration of timed event nr 1, set to 1s while debugging
 const long TRANSITION_TIME_MS = MS_PER_MINUTE * TRANSITION_TIME_MINUTES;
@@ -79,7 +79,7 @@ const int HEAT_ENDING_SOON_FLAG = 12; // yellow flag
 long epoch; 
 
 int heatNumber = 0;
-int heatTimeMinutes = 10;
+long heatTimeMinutes = 10;
 
 
 #ifdef HAS_LCD_SUPPORT
@@ -102,22 +102,24 @@ int update_display(long cycle_time_ms)
 {
 #ifdef HAS_LCD_SUPPORT
   // TODO update the contents on the real display
-	  // set the cursor to column 0, line 1
+  // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
 
   long seconds = cycle_time_ms/1000 % 60;
   long minutes = cycle_time_ms/1000/60;
 
-
   lcd.setCursor(0, 0);
   lcd.print("cycle time S");
   lcd.setCursor(15, 1);
-  // print the number of seconds since cycle started
-  lcd.print(seconds);
+  lcd.print(seconds % 10);
+  lcd.setCursor(14, 1);
+  lcd.print(seconds / 10);
   lcd.setCursor(13, 1);
   lcd.print(":");
   lcd.setCursor(12, 1);
-  lcd.print(minutes);
+  lcd.print(minutes % 10);
+  lcd.setCursor(11, 1);
+  lcd.print(minutes / 10);
 
 #else
   // TODO show display contents on serial interface
@@ -246,12 +248,11 @@ long getCycleTime() {
   static int step = 0;
   long cycle_time_ms = 0;
   cycle_time_ms = step;
-  cycle_time_ms = cycle_time_ms % (TRANSITION_TIME_MS + HEAT_TIME_MS);
+  cycle_time_ms = cycle_time_ms % CYCLE_DURATION_MS;
   
   ++step;
 #else
   long elapsed_time = millis() - epoch;
-  
   long cycle_time_ms = elapsed_time % CYCLE_DURATION_MS;
 #endif
   return cycle_time_ms;
