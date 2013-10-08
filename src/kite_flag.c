@@ -83,7 +83,7 @@ int heatTimeMinutes = 10;
 
 
 #ifdef HAS_LCD_SUPPORT
-#import <LiquidCrystal.h>
+#include <LiquidCrystal.h>
 
 // select the pins used on the LCD panel
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7); 
