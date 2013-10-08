@@ -195,7 +195,7 @@ void showFlag(int desiredFlag) {
     break;
   }
   
-  if(!state) {
+  if(state) {
 #ifdef DEBUG_STATE
     Serial.println("FLAG_MOTOR running");
 #endif
