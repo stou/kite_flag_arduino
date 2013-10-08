@@ -31,7 +31,7 @@
 // CONFIGURATION Section =========================
 
 // uncomment this line to single step in simuino simulator
-#define DEBUG_STATE 1
+// #define DEBUG_STATE 1
 
 #ifndef DEBUG_STATE
 #define HAS_LCD_SUPPORT 1
@@ -78,6 +78,10 @@ const int HEAT_ENDING_SOON_FLAG = 12; // yellow flag
 // boot time
 long epoch; 
 
+int heatNumber = 0;
+int heatTimeMinutes = 10;
+
+
 #ifdef HAS_LCD_SUPPORT
 #import <LiquidCrystal.h>
 
@@ -87,14 +91,14 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 
 
-const int BUTTON_RIGHT  0;
-const int BUTTON_UP     1;
-const int BUTTON_DOWN   2;
-const int BUTTON_LEFT   3;
-const int BUTTON_SELECT 4;
-const int BUTTON_NONE   5;
+const int BUTTON_RIGHT  = 0;
+const int BUTTON_UP     = 1;
+const int BUTTON_DOWN   = 2;
+const int BUTTON_LEFT   = 3;
+const int BUTTON_SELECT = 4;
+const int BUTTON_NONE   = 5;
 
-int update_display()
+int update_display(long cycle_time_ms)
 {
 #ifdef HAS_LCD_SUPPORT
   // TODO update the contents on the real display
@@ -110,55 +114,57 @@ int update_display()
   // TODO show display contents on serial interface
   Serial.print("cycle time S");
   Serial.println(cycle_time_ms/1000);
+  Serial.print("heatTimeMinutes: ");
+  Serial.println(heatTimeMinutes);
 #endif
 }
 
 int read_buttons()
 {
-  int adc_key_in = analogRead(0);      // read the value from the sensor 
+  int adcKeyIn = analogRead(0);      // read the value from the sensor 
   // my buttons when read are centered at these valies: 0, 144, 329, 504, 741
   // we add approx 50 to those values and check to see if we are close
   
 #if 1
-  if (adc_key_in > 1000) return BUTTON_NONE; // We make this the 1st option for speed reasons since it will be the most likely result
+  if (adcKeyIn > 1000) return BUTTON_NONE; // We make this the 1st option for speed reasons since it will be the most likely result
   // For V1.1 use this threshold
-  if (adc_key_in < 50)   return BUTTON_RIGHT;  
-  if (adc_key_in < 250)  return BUTTON_UP; 
-  if (adc_key_in < 450)  return BUTTON_DOWN; 
-  if (adc_key_in < 650)  return BUTTON_LEFT; 
-  if (adc_key_in < 850)  return BUTTON_SELECT;  
+  if (adcKeyIn < 50)   return BUTTON_RIGHT;  
+  if (adcKeyIn < 250)  return BUTTON_UP; 
+  if (adcKeyIn < 450)  return BUTTON_DOWN; 
+  if (adcKeyIn < 650)  return BUTTON_LEFT; 
+  if (adcKeyIn < 850)  return BUTTON_SELECT;  
 #else
   // For V1.0 use this threshold
-  if (adc_key_in < 50)   return BUTTON_RIGHT;  
-  if (adc_key_in < 195)  return BUTTON_UP; 
-  if (adc_key_in < 380)  return BUTTON_DOWN; 
-  if (adc_key_in < 555)  return BUTTON_LEFT; 
-  if (adc_key_in < 790)  return BUTTON_SELECT;   
+  if (adcKeyIn < 50)   return BUTTON_RIGHT;  
+  if (adcKeyIn < 195)  return BUTTON_UP; 
+  if (adcKeyIn < 380)  return BUTTON_DOWN; 
+  if (adcKeyIn < 555)  return BUTTON_LEFT; 
+  if (adcKeyIn < 790)  return BUTTON_SELECT;   
 #endif
   return BUTTON_NONE;  // when all others fail, return this...
 }
 
 // depending on which button was pushed, we perform an action
-void handle_buttons(lcdKey)
+void handle_buttons(int lcdKey)
 {
-  switch (lcd_key){
-  case btnRIGHT:
-    HEAT_NO++;
+  switch (lcdKey){
+  case BUTTON_RIGHT:
+    heatNumber++;
     break;
-  case btnLEFT:
-    HEAT_NO--;
+  case BUTTON_LEFT:
+    heatNumber--;
     break;
-  case btnUP:
-    HEAT_TIME++;
+  case BUTTON_UP:
+    heatTimeMinutes++;
     break;
-  case btnDOWN:
-    HEAT_TIME--;
+  case BUTTON_DOWN:
+    heatTimeMinutes--;
     break;
-  case btnSELECT:
-    lcd.print(GREEN);
-    break;
-  case btnNONE:
-    lcd.print("Time left");
+  // case BUTTON_SELECT:
+  //   lcd.print(GREEN);
+  //   break;
+  // case BUTTON_NONE:
+  //   lcd.print("Time left");
     break;
   default:
     break;
