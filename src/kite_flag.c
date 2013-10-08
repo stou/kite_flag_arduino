@@ -213,9 +213,9 @@ void setup()
 {
   epoch = millis(); //start time
   
-  pinMode (NO_HEAT_FLAG, INPUT);  //set pin 2 as input
-  pinMode (HEAT_IN_PROGESS_FLAG, INPUT);  //set pin 3 as input
-  pinMode (HEAT_ENDING_SOON_FLAG, INPUT);  //set pin 12 as input
+  pinMode (NO_HEAT_FLAG, INPUT_PULLUP);  //set pin 2 as input
+  pinMode (HEAT_IN_PROGESS_FLAG, INPUT_PULLUP);  //set pin 3 as input
+  pinMode (HEAT_ENDING_SOON_FLAG, INPUT_PULLUP);  //set pin 12 as input
   pinMode (FLAG_MOTOR, OUTPUT); //set pin 13 as output
   
   // setup LEDs for signalling current flag
