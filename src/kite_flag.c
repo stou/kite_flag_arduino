@@ -39,7 +39,6 @@
 
 //variabel for changing heat_time in min
 const long TRANSITION_TIME_MINUTES = 2; 
-const long HEAT_TIME_MINUTES = 10;
 const long HEAT_ENDING_SOON_TIME_MINUTES = 1;
 
 // END OF CONFIGURATION ==========================
@@ -51,12 +50,6 @@ const long MS_PER_MINUTE = 2;
 #else
 const long MS_PER_MINUTE = 1000 * 60;
 #endif
-//the duration of timed event nr 1, set to 1s while debugging
-const long TRANSITION_TIME_MS = MS_PER_MINUTE * TRANSITION_TIME_MINUTES;
-const long HEAT_TIME_MS = MS_PER_MINUTE * HEAT_TIME_MINUTES;
-const long HEAT_ENDING_SOON_TIME_MS = MS_PER_MINUTE * HEAT_ENDING_SOON_TIME_MINUTES;
-
-const long CYCLE_DURATION_MS = TRANSITION_TIME_MS + HEAT_TIME_MS;
 
 //Output for motor setup,Horn, stop switchs
 const int FLAG_MOTOR = 13;
@@ -109,7 +102,8 @@ int update_display(long cycle_time_ms)
   long minutes = cycle_time_ms/1000/60;
 
   lcd.setCursor(0, 0);
-  lcd.print("cycle time S");
+  lcd.print(heatTimeMinutes);
+  
   lcd.setCursor(15, 1);
   lcd.print(seconds % 10);
   lcd.setCursor(14, 1);
@@ -258,6 +252,11 @@ long getCycleTime() {
   return cycle_time_ms;
 }
 
+long getHeatEndingSoonTime() {
+	return (TRANSITION_TIME_MINUTES + heatTimeMinutes - HEAT_ENDING_SOON_TIME_MINUTES) *  MS_PER_MINUTE;
+}
+
+
 /*
   on startup:
   run motor until the red flag is showing
@@ -283,14 +282,14 @@ void loop()
 #endif
   
   // no heat in progress
-  if (cycle_time_ms < TRANSITION_TIME_MS) {
+  if (cycle_time_ms < (TRANSITION_TIME_MINUTES * MS_PER_MINUTE)) {
 #ifdef DEBUG_STATE
     Serial.println("show NO_HEAT_FLAG");
 #endif
     showFlag(NO_HEAT_FLAG);
   } else {
     // HEAT_ENDING for heat ending
-    if (cycle_time_ms < (TRANSITION_TIME_MS + HEAT_TIME_MS - HEAT_ENDING_SOON_TIME_MS)) {
+    if (cycle_time_ms < getHeatEndingSoonTime()) {
 #ifdef DEBUG_STATE
       Serial.println("show HEAT_IN_PROGESS_FLAG");
 #endif
