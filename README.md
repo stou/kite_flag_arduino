@@ -30,8 +30,18 @@ kite_flag_arduino
 
 ## Hardware Setup
 
-![](docs/IMG_20130929_160835-small.jpg)
+### Control electronics
 
-![](docs/IMG_20131006_195850-small.jpg)
+![](docs/IMG_20131007_085048.jpg)
 
-![](docs/IMG_20131006_195919-small.jpg)
+### Signalling flag
+
+![](docs/IMG_20130929_160835.jpg)
+
+### Switches in turning mechanics
+
+![](docs/IMG_20131006_195850.jpg)
+
+### Turning mechanics
+
+![](docs/IMG_20131006_195919.jpg)
