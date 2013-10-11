@@ -3,8 +3,6 @@
 #ifndef _HORN_H
 #define _HORN_H 1
 
-#define DEBUG_HORN 1
-
 const int HORN_UPDATE = 0;
 const int HORN_RED = 1;
 const int HORN_GREEN = 2;

@@ -6,6 +6,9 @@
 
 #include <Arduino.h>
 
+#define DEBUG_HORN 1
+
+
 //variabel for changing heat_time in min
 const long TRANSITION_TIME_MINUTES = 2; 
 const long HEAT_ENDING_SOON_TIME_MINUTES = 1;
@@ -21,8 +24,13 @@ const long MS_PER_MINUTE = 60000;
 #endif
 
 //Output for motor setup,Horn, stop switchs
+#ifdef DEBUG_HORN
+const int FLAG_MOTOR = 11;
+const int HORN = 13;
+#else
 const int FLAG_MOTOR = 13;
 const int HORN = 11;
+#endif
 
 #ifdef DEBUG_SIMUINO
 // the Analog pins does not seem to work as outputs in simuino
