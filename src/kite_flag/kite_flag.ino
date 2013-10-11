@@ -31,15 +31,17 @@
 // CONFIGURATION Section =========================
 
 // uncomment this line to single step in simuino simulator
-#define DEBUG_STATE 1
+#define DEBUG_MAIN 1
+// #define DEBUG_SIMUINO 1
+
 
 // allow running in simuino
-#ifdef DEBUG_STATE
+#ifdef DEBUG_SIMUINO
 #define INPUT_PULLUP INPUT
 #endif
 
 
-#ifndef DEBUG_STATE
+#ifndef DEBUG_MAIN
 #define HAS_LCD_SUPPORT 1
 #endif
 
@@ -50,7 +52,7 @@ const long HEAT_ENDING_SOON_TIME_MINUTES = 1;
 // END OF CONFIGURATION ==========================
 
 // number of milliseconds per minute
-#ifdef DEBUG_STATE
+#ifdef DEBUG_SIMUINO
 // NB! speed up during debugging (2 ms second)
 const long MS_PER_MINUTE = 2;
 #else
@@ -59,8 +61,10 @@ const long MS_PER_MINUTE = 60000;
 
 //Output for motor setup,Horn, stop switchs
 const int FLAG_MOTOR = 13;
+const int HORN = 11;
 
-#ifdef DEBUG_STATE
+#ifdef DEBUG_SIMUINO
+// the Analog pins does not seem to work as outputs in simuino
 const int LED_FLAG_RED = 8;
 const int LED_FLAG_GREEN = 7;
 const int LED_FLAG_YELLOW = 6;
@@ -76,177 +80,22 @@ const int HEAT_ENDING_SOON_FLAG = 12; // yellow flag
 
 // boot time
 long epoch; 
-
-int heatNumber = 0;
 long heatTimeMinutes = 10;
 
-
-#ifdef HAS_LCD_SUPPORT
-#include <LiquidCrystal.h>
-
-// select the pins used on the LCD panel
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7); 
-#endif
-
-
-
-const int BUTTON_RIGHT  = 0;
-const int BUTTON_UP     = 1;
-const int BUTTON_DOWN   = 2;
-const int BUTTON_LEFT   = 3;
-const int BUTTON_SELECT = 4;
-const int BUTTON_NONE   = 5;
-
-int update_display(long cycle_time_ms)
-{
-#ifdef HAS_LCD_SUPPORT
-  // TODO update the contents on the real display
-  // set the cursor to column 0, line 1
-  // (note: line 1 is the second row, since counting begins with 0):
-
-  long seconds = cycle_time_ms/1000 % 60;
-  long minutes = cycle_time_ms/1000/60;
-
-  lcd.setCursor(0, 0);
-  lcd.print(heatTimeMinutes);
-
-  lcd.setCursor(15, 1);
-  lcd.print(seconds % 10);
-  lcd.setCursor(14, 1);
-  lcd.print(seconds / 10);
-  lcd.setCursor(13, 1);
-  lcd.print(":");
-  lcd.setCursor(12, 1);
-  lcd.print(minutes % 10);
-  lcd.setCursor(11, 1);
-  lcd.print(minutes / 10);
-
-#else
-  // TODO show display contents on serial interface
-  Serial.print("cycle time S");
-  Serial.println(cycle_time_ms/1000);
-  Serial.print("heatTimeMinutes: ");
-  Serial.println(heatTimeMinutes);
-#endif
-}
-
-int read_buttons()
-{
-  int adcKeyIn = analogRead(0);      // read the value from the sensor 
-  // my buttons when read are centered at these valies: 0, 144, 329, 504, 741
-  // we add approx 50 to those values and check to see if we are close
-  
-#if 1
-  if (adcKeyIn > 1000) return BUTTON_NONE; // We make this the 1st option for speed reasons since it will be the most likely result
-  // For V1.1 use this threshold
-  if (adcKeyIn < 50)   return BUTTON_RIGHT;  
-  if (adcKeyIn < 250)  return BUTTON_UP; 
-  if (adcKeyIn < 450)  return BUTTON_DOWN; 
-  if (adcKeyIn < 650)  return BUTTON_LEFT; 
-  if (adcKeyIn < 850)  return BUTTON_SELECT;  
-#else
-  // For V1.0 use this threshold
-  if (adcKeyIn < 50)   return BUTTON_RIGHT;  
-  if (adcKeyIn < 195)  return BUTTON_UP; 
-  if (adcKeyIn < 380)  return BUTTON_DOWN; 
-  if (adcKeyIn < 555)  return BUTTON_LEFT; 
-  if (adcKeyIn < 790)  return BUTTON_SELECT;   
-#endif
-  return BUTTON_NONE;  // when all others fail, return this...
-}
-
-// depending on which button was pushed, we perform an action
-void handle_buttons(int lcdKey)
-{
-  static int lastButton;
-
-  if(lastButton == lcdKey) {
-  	return;
-  }
-  lastButton = lcdKey;
-
-  switch (lcdKey){
-  // case BUTTON_RIGHT:
-  //   heatNumber++;
-  //   break;
-  // case BUTTON_LEFT:
-  //   heatNumber--;
-  //   break;
-  case BUTTON_UP:
-    heatTimeMinutes++;
-    break;
-  case BUTTON_DOWN:
-    heatTimeMinutes--;
-    break;
-  // case BUTTON_SELECT:
-  //   lcd.print(GREEN);
-  //   break;
-  // case BUTTON_NONE:
-  //   lcd.print("Time left");
-    break;
-  default:
-    break;
-  }
-}
-
-// runs motor until desired desiredFlag is showing
-void showFlag(int desiredFlag) {
-
-  static int flagPosition;
-  int runMotor = (flagPosition != desiredFlag);
-
-  int state = digitalRead(desiredFlag);
-#ifdef DEBUG_STATE
-  Serial.print("s: ");
-  Serial.print(state);
-  Serial.print(runMotor);
-  Serial.print(" ");
-  Serial.println(desiredFlag);
-#endif
-
-  switch(desiredFlag) {
-  case NO_HEAT_FLAG:
-    digitalWrite(LED_FLAG_RED, HIGH);
-    digitalWrite(LED_FLAG_GREEN, LOW);
-    digitalWrite(LED_FLAG_YELLOW, LOW);
-    break;
-  case HEAT_IN_PROGESS_FLAG:
-    digitalWrite(LED_FLAG_RED, LOW);
-    digitalWrite(LED_FLAG_GREEN, HIGH);
-    digitalWrite(LED_FLAG_YELLOW, LOW);
-    break;
-  case HEAT_ENDING_SOON_FLAG:
-    digitalWrite(LED_FLAG_RED, LOW);
-    digitalWrite(LED_FLAG_GREEN, LOW);
-    digitalWrite(LED_FLAG_YELLOW, HIGH);
-    break;
-  default:
-    break;
-  }
-  
-  if(runMotor && state) {
-#ifdef DEBUG_STATE
-    Serial.println("FLAG_MOTOR running");
-#endif
-    digitalWrite(FLAG_MOTOR, HIGH);
-  } else {
-#ifdef DEBUG_STATE
-    Serial.println("FLAG_MOTOR off");
-#endif
-    flagPosition = desiredFlag;
-    digitalWrite(FLAG_MOTOR, LOW);
-  }
-}
 
 
 void setup()
 {
-  epoch = millis(); //start time
+  epoch = millis();
   
-  pinMode (NO_HEAT_FLAG, INPUT_PULLUP);  //set pin 2 as input
-  pinMode (HEAT_IN_PROGESS_FLAG, INPUT_PULLUP);  //set pin 3 as input
-  pinMode (HEAT_ENDING_SOON_FLAG, INPUT_PULLUP);  //set pin 12 as input
-  pinMode (FLAG_MOTOR, OUTPUT); //set pin 13 as output
+  // setup inputs for flag switches
+  pinMode (NO_HEAT_FLAG, INPUT_PULLUP);
+  pinMode (HEAT_IN_PROGESS_FLAG, INPUT_PULLUP);
+  pinMode (HEAT_ENDING_SOON_FLAG, INPUT_PULLUP);
+
+  // setup outputs for Motor and Horn
+  pinMode (FLAG_MOTOR, OUTPUT);
+  pinMode (HORN, OUTPUT);
   
   // setup LEDs for signalling current flag
   pinMode(LED_FLAG_RED, OUTPUT);
@@ -264,7 +113,7 @@ void setup()
 
 
 long getCycleTime() {
-#ifdef DEBUG_STATE
+#ifdef DEBUG_MAIN
   static int step = 0;
   long cycle_time_ms = 0;
   cycle_time_ms = step;
@@ -301,7 +150,7 @@ void loop()
 
   update_display(cycle_time_ms);
   
-#ifdef DEBUG_STATE
+#ifdef DEBUG_MAIN
   Serial.print("cycle time: ");
   long cycle_time_minutes = cycle_time_ms / MS_PER_MINUTE;
   Serial.println(cycle_time_minutes);
@@ -309,19 +158,19 @@ void loop()
   
   // no heat in progress
   if (cycle_time_ms < (TRANSITION_TIME_MINUTES * MS_PER_MINUTE)) {
-#ifdef DEBUG_STATE
+#ifdef DEBUG_MAIN
     Serial.println("show NO_HEAT_FLAG");
 #endif
     showFlag(NO_HEAT_FLAG);
   } else {
     // HEAT_ENDING for heat ending
     if (cycle_time_ms < getHeatEndingSoonTime()) {
-#ifdef DEBUG_STATE
+#ifdef DEBUG_MAIN
       Serial.println("show HEAT_IN_PROGESS_FLAG");
 #endif
       showFlag(HEAT_IN_PROGESS_FLAG);
     } else {
-#ifdef DEBUG_STATE
+#ifdef DEBUG_MAIN
       Serial.println("show HEAT_ENDING_SOON_FLAG");
 #endif
       showFlag(HEAT_ENDING_SOON_FLAG);
