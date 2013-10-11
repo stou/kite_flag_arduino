@@ -1,24 +1,9 @@
 //  Author: Rasmus Stougaard
 
-#ifdef HAS_LCD_SUPPORT
-#include <LiquidCrystal.h>
-
-// select the pins used on the LCD panel
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7); 
-#endif
-
-// int heatNumber = 0;
-
-const int BUTTON_RIGHT  = 0;
-const int BUTTON_UP     = 1;
-const int BUTTON_DOWN   = 2;
-const int BUTTON_LEFT   = 3;
-const int BUTTON_SELECT = 4;
-const int BUTTON_NONE   = 5;
+#include "display.h"
 
 int update_display(long cycle_time_ms)
 {
-#ifdef HAS_LCD_SUPPORT
   // TODO update the contents on the real display
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
@@ -26,26 +11,31 @@ int update_display(long cycle_time_ms)
   long seconds = cycle_time_ms/1000 % 60;
   long minutes = cycle_time_ms/1000/60;
 
-  lcd.setCursor(0, 0);
-  lcd.print(heatTimeMinutes);
+//  lcd.setCursor(0, 0);
+//  lcd.print(heatTimeMinutes);
+//
+//  lcd.setCursor(15, 1);
+//  lcd.print(seconds % 10);
+//  lcd.setCursor(14, 1);
+//  lcd.print(seconds / 10);
+//  lcd.setCursor(13, 1);
+//  lcd.print(":");
+//  lcd.setCursor(12, 1);
+//  lcd.print(minutes % 10);
+//  lcd.setCursor(11, 1);
+//  lcd.print(minutes / 10);
 
-  lcd.setCursor(15, 1);
-  lcd.print(seconds % 10);
-  lcd.setCursor(14, 1);
-  lcd.print(seconds / 10);
-  lcd.setCursor(13, 1);
-  lcd.print(":");
-  lcd.setCursor(12, 1);
-  lcd.print(minutes % 10);
-  lcd.setCursor(11, 1);
-  lcd.print(minutes / 10);
-
-#else
-  // TODO show display contents on serial interface
-  Serial.print("cycle time S");
-  Serial.println(cycle_time_ms/1000);
-  Serial.print("heatTimeMinutes: ");
-  Serial.println(heatTimeMinutes);
+#ifdef DEBUG_DISPLAY
+  // TODO show display contents on serial interface once per second
+  static long lastTimestamp = 0;
+  long timestamp = millis();
+  if(lastTimestamp != timestamp && !(timestamp % 1000)) {
+    lastTimestamp = timestamp;
+    Serial.print("cycle time S: ");
+    Serial.println(cycle_time_ms/1000);
+    Serial.print("heatTimeMinutes: ");
+    Serial.println(heatTimeMinutes);
+  }
 #endif
 }
 

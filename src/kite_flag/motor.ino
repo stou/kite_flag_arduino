@@ -1,8 +1,5 @@
 //  Author: Rasmus Stougaard
 
-#ifdef DEBUG_SERIAL
-#define DEBUG_MOTOR 1
-#endif
 
 // runs motor until desired desiredFlag is showing
 void showFlag(int desiredFlag) {

@@ -28,29 +28,18 @@
 //  Program source
 //================================================
 
-// CONFIGURATION Section =========================
+//#define DEBUG_MAIN 1
+#define DEBUG_HORN 1
+#define DEBUG_DISPLAY 1
 
-// uncomment this line to single step in simuino simulator
-#define DEBUG_MAIN 1
-// #define DEBUG_SIMUINO 1
-
-
-// allow running in simuino
-#ifdef DEBUG_SIMUINO
-#define INPUT_PULLUP INPUT
-#endif
-
-#ifndef DEBUG_MAIN
-#define HAS_LCD_SUPPORT 1
-#endif
-
+#include <LiquidCrystal.h>
 #include "common.h"
+
+#include "display.h"
 
 // boot time
 long epoch; 
 long heatTimeMinutes = 10;
-
-
 
 void setup()
 {
@@ -70,33 +59,20 @@ void setup()
   pinMode(LED_FLAG_GREEN, OUTPUT);
   pinMode(LED_FLAG_YELLOW, OUTPUT);
   
-#ifdef HAS_LCD_SUPPORT
   // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
-#endif
   
   Serial.begin(9600);
   Serial.println("setup done");
 }
 
-
 long getCycleTime() {
-#ifdef DEBUG_MAIN
-  static int step = 0;
-  long cycle_time_ms = 0;
-  cycle_time_ms = step;
-  cycle_time_ms = cycle_time_ms % ((TRANSITION_TIME_MINUTES + heatTimeMinutes) * MS_PER_MINUTE);
-  
-  ++step;
-#else
   long elapsed_time = millis() - epoch;
-  long cycle_time_ms = elapsed_time % ((TRANSITION_TIME_MINUTES + heatTimeMinutes) * MS_PER_MINUTE);
-#endif
-  return cycle_time_ms;
+  return elapsed_time % ((TRANSITION_TIME_MINUTES + heatTimeMinutes) * MS_PER_MINUTE);
 }
 
 long getHeatEndingSoonTime() {
-	return (TRANSITION_TIME_MINUTES + heatTimeMinutes - HEAT_ENDING_SOON_TIME_MINUTES) *  MS_PER_MINUTE;
+  return (TRANSITION_TIME_MINUTES + heatTimeMinutes - HEAT_ENDING_SOON_TIME_MINUTES) *  MS_PER_MINUTE;
 }
 
 
@@ -111,18 +87,13 @@ long getHeatEndingSoonTime() {
 */
 void loop()
 {
+  horn_demo();
   long cycle_time_ms = getCycleTime();
   
   int lcdKey = read_buttons();
   handle_buttons(lcdKey);
 
   update_display(cycle_time_ms);
-  
-#ifdef DEBUG_MAIN
-  Serial.print("cycle time: ");
-  long cycle_time_minutes = cycle_time_ms / MS_PER_MINUTE;
-  Serial.println(cycle_time_minutes);
-#endif
   
   // no heat in progress
   if (cycle_time_ms < (TRANSITION_TIME_MINUTES * MS_PER_MINUTE)) {
