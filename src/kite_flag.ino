@@ -31,7 +31,13 @@
 // CONFIGURATION Section =========================
 
 // uncomment this line to single step in simuino simulator
-// #define DEBUG_STATE 1
+#define DEBUG_STATE 1
+
+// allow running in simuino
+#ifdef DEBUG_STATE
+#define INPUT_PULLUP INPUT
+#endif
+
 
 #ifndef DEBUG_STATE
 #define HAS_LCD_SUPPORT 1
@@ -253,6 +259,7 @@ void setup()
 #endif
   
   Serial.begin(9600);
+  Serial.println("setup done");
 }
 
 
