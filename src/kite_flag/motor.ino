@@ -1,3 +1,4 @@
+//  Author: Rasmus Stougaard
 
 #ifdef DEBUG_SERIAL
 #define DEBUG_MOTOR 1

@@ -1,3 +1,4 @@
+//  Author: Rasmus Stougaard
 
 #ifdef HAS_LCD_SUPPORT
 #include <LiquidCrystal.h>
@@ -6,9 +7,7 @@
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7); 
 #endif
 
-
 // int heatNumber = 0;
-
 
 const int BUTTON_RIGHT  = 0;
 const int BUTTON_UP     = 1;
