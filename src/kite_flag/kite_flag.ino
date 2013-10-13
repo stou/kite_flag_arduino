@@ -4,14 +4,14 @@
 #define DEBUG_HORN 1
 #define DEBUG_DISPLAY 1
 
-#include <LiquidCrystal.h>
 #include "common.h"
+#include <LiquidCrystal.h>
+#include "UserInterface.h"
 
-#include "display.h"
+UserInterface ui;
 
 // boot time
 long epoch; 
-long heatTimeMinutes = 10;
 
 void setup()
 {
@@ -30,20 +30,18 @@ void setup()
   pinMode(LED_FLAG_RED, OUTPUT);
   pinMode(LED_FLAG_GREEN, OUTPUT);
   pinMode(LED_FLAG_YELLOW, OUTPUT);
-  
-  setup_display();
-  
+    
   Serial.begin(9600);
   Serial.println("setup done");
 }
 
 long getCycleTime() {
   long elapsed_time = millis() - epoch;
-  return elapsed_time % ((TRANSITION_TIME_MINUTES + heatTimeMinutes) * MS_PER_MINUTE);
+  return elapsed_time % ((TRANSITION_TIME_MINUTES + ui.getHeatTimeMinutes()) * MS_PER_MINUTE);
 }
 
 long getHeatEndingSoonTime() {
-  return (TRANSITION_TIME_MINUTES + heatTimeMinutes - HEAT_ENDING_SOON_TIME_MINUTES) *  MS_PER_MINUTE;
+  return (TRANSITION_TIME_MINUTES + ui.getHeatTimeMinutes() - HEAT_ENDING_SOON_TIME_MINUTES) *  MS_PER_MINUTE;
 }
 
 
@@ -61,10 +59,9 @@ void loop()
   horn_demo();
   long cycle_time_ms = getCycleTime();
   
-  int lcdKey = read_buttons();
-  handle_buttons(lcdKey);
+  ui.pollButtons();
 
-  update_display(cycle_time_ms);
+  ui.updateDisplay(cycle_time_ms);
   
   // no heat in progress
   if (cycle_time_ms < (TRANSITION_TIME_MINUTES * MS_PER_MINUTE)) {

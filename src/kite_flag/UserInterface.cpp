@@ -1,13 +1,20 @@
 //  Author: Rasmus Stougaard
 
-#include "display.h"
+#include "UserInterface.h"
+#include <Arduino.h>
+#include <LiquidCrystal.h>
 
-void setup_display(){
+// select the pins used on the LCD panel
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+
+
+UserInterface::UserInterface(){
+  heatTimeMinutes = 10;
    // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
 }
 
-void update_display(long cycle_time_ms)
+void UserInterface::updateDisplay(long cycle_time_ms)
 {
   // TODO update the contents on the real display
   // set the cursor to column 0, line 1
@@ -44,7 +51,14 @@ void update_display(long cycle_time_ms)
 #endif
 }
 
-int read_buttons()
+void UserInterface::pollButtons()
+{
+  int lcdKey = readButtons();
+  handleButton(lcdKey);
+
+}
+
+int UserInterface::readButtons()
 {
   int adcKeyIn = analogRead(0);      // read the value from the sensor 
   // my buttons when read are centered at these valies: 0, 144, 329, 504, 741
@@ -70,7 +84,7 @@ int read_buttons()
 }
 
 // depending on which button was pushed, we perform an action
-void handle_buttons(int lcdKey)
+void UserInterface::handleButton(int lcdKey)
 {
   static int lastButton;
 
