@@ -1,7 +1,15 @@
 //  Author: Rasmus Stougaard
 
 
-#include "horn.h"
+#include "Horn.h"
+#include <Arduino.h>
+
+int Horn::output = 0;
+
+Horn::Horn(const int outputPin) {
+    pinMode (outputPin, OUTPUT);
+    Horn::output = outputPin;
+}
 
 // Unit of sound lenth is controlled by HORN_TICK_DURATION_MS
 // sound '-'
@@ -11,11 +19,10 @@
 // YELLOW: '_ ___'
 // RED:    '_ _ ___'
 
-void horn_signal(int type) {
+void Horn::signal(int type) {
 
   static long lastTimestamp = 0;
   static int remainingTicks = 0;
-
 
   if(! remainingTicks){
     switch(type) {
@@ -54,10 +61,10 @@ void horn_signal(int type) {
     case 5:
     // case 6:
     case 7:
-      digitalWrite(HORN, HIGH);
+      digitalWrite(output, HIGH);
       break;
     default:
-      digitalWrite(HORN, LOW);
+      digitalWrite(output, LOW);
       break;    
   }
 
@@ -65,10 +72,10 @@ void horn_signal(int type) {
   // run the countdown
   if(remainingTicks && lastTimestamp != timestamp && ! (timestamp % HORN_TICK_DURATION_MS)){
 #ifdef DEBUG_HORN
-    Serial.print("remainingTicks: ");
+    Serial.print("horn ticks: ");
     Serial.print(remainingTicks);
     Serial.print(" : ");
-    Serial.println(digitalRead(HORN));
+    Serial.println(digitalRead(output)? "ON": "OFF");
 #endif
     --remainingTicks;
     lastTimestamp = timestamp;
@@ -76,17 +83,17 @@ void horn_signal(int type) {
 
 }
 
-void horn_demo() {
+void Horn::demo() {
 
   static int horn_signal_type = HORN_RED;
   long time = millis();
 
-  horn_signal(HORN_UPDATE);
+  signal(HORN_UPDATE);
 
   // demonstrate the horn signals by alternating between them
   int signal_cycle_time = HORN_TICK_DURATION_MS * (8 + 1);
   if(!(time % signal_cycle_time)) {
-    horn_signal(horn_signal_type % 3 + 1);
+    signal(horn_signal_type % 3 + 1);
     ++horn_signal_type;
 
 //    horn_signal(HORN_RED);

@@ -1,16 +1,19 @@
 // Author: Rasmus Stougaard
 
 //#define DEBUG_MAIN 1
-#define DEBUG_HORN 1
 
-#include "common.h"
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
+#include "Horn.h"
+
+#include "common.h"
 
 // select the pins used on the LCD shield
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 UserInterface ui(&lcd);
+
+Horn horn(HORN);
 
 // boot time
 long epoch; 
@@ -26,7 +29,6 @@ void setup()
 
   // setup outputs for Motor and Horn
   pinMode (FLAG_MOTOR, OUTPUT);
-  pinMode (HORN, OUTPUT);
   
   // setup LEDs for signalling current flag
   pinMode(LED_FLAG_RED, OUTPUT);
@@ -90,9 +92,9 @@ void fireTimedEvents(long timestamp) {
 */
 void loop()
 {
-  fireTimedEvents(millis());
+//  fireTimedEvents(millis());
+  horn.demo();
   return;
-  horn_demo();
   long cycle_time_ms = getCycleTime();
   
   ui.pollButtons();
