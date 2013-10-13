@@ -2,7 +2,6 @@
 
 //#define DEBUG_MAIN 1
 #define DEBUG_HORN 1
-#define DEBUG_DISPLAY 1
 
 #include "common.h"
 #include <LiquidCrystal.h>
@@ -59,7 +58,9 @@ void fireTimedEvents(long timestamp) {
     lastTimestamp = timestamp;
 
     if(getTimeout(timestamp, 1000)){
-      Serial.println("1 second timeout");
+      Serial.println("Updating display (1 second timeout)");
+      ui.setTime(getCycleTime());
+      ui.updateDisplay();
     }
 
     if(getTimeout(timestamp, 3000)){
@@ -93,8 +94,9 @@ void loop()
   long cycle_time_ms = getCycleTime();
   
   ui.pollButtons();
+  ui.setTime(cycle_time_ms);
+  ui.updateDisplay();
 
-  ui.updateDisplay(cycle_time_ms);
   
   // no heat in progress
   if (cycle_time_ms < (TRANSITION_TIME_MINUTES * MS_PER_MINUTE)) {

@@ -14,40 +14,33 @@ UserInterface::UserInterface(uint8_t rs, uint8_t enable,
   lcd.begin(16, 2);
 }
 
-void UserInterface::updateDisplay(long cycle_time_ms)
+void UserInterface::updateDisplay()
 {
   // TODO update the contents on the real display
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
 
-  long seconds = cycle_time_ms/1000 % 60;
-  long minutes = cycle_time_ms/1000/60;
+  lcd.setCursor(0, 0);
+  lcd.print(heatTimeMinutes);
 
-//  lcd.setCursor(0, 0);
-//  lcd.print(heatTimeMinutes);
-//
-//  lcd.setCursor(15, 1);
-//  lcd.print(seconds % 10);
-//  lcd.setCursor(14, 1);
-//  lcd.print(seconds / 10);
-//  lcd.setCursor(13, 1);
-//  lcd.print(":");
-//  lcd.setCursor(12, 1);
-//  lcd.print(minutes % 10);
-//  lcd.setCursor(11, 1);
-//  lcd.print(minutes / 10);
+  lcd.setCursor(15, 1);
+  lcd.print(seconds % 10);
+  lcd.setCursor(14, 1);
+  lcd.print(seconds / 10);
+  lcd.setCursor(13, 1);
+  lcd.print(":");
+  lcd.setCursor(12, 1);
+  lcd.print(minutes % 10);
+  lcd.setCursor(11, 1);
+  lcd.print(minutes / 10);
 
 #ifdef DEBUG_DISPLAY
-  // TODO show display contents on serial interface once per second
-  static long lastTimestamp = 0;
-  long timestamp = millis();
-  if(lastTimestamp != timestamp && !(timestamp % 1000)) {
-    lastTimestamp = timestamp;
-    Serial.print("cycle time S: ");
-    Serial.println(cycle_time_ms/1000);
-    Serial.print("heatTimeMinutes: ");
-    Serial.println(heatTimeMinutes);
-  }
+  Serial.print("cycle time: ");
+  Serial.print(minutes);
+  Serial.print(":");
+  Serial.println(seconds);
+  Serial.print("heatTimeMinutes: ");
+  Serial.println(heatTimeMinutes);
 #endif
 }
 

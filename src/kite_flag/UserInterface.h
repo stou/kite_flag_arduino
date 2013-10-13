@@ -3,6 +3,8 @@
 #ifndef _USERINTERFACE_H
 #define _USERINTERFACE_H 1
 
+#define DEBUG_DISPLAY 1
+
 #include <LiquidCrystal.h>
 
 class UserInterface {
@@ -12,17 +14,24 @@ class UserInterface {
     ~UserInterface(){};
 
     // void setup();
-    void updateDisplay(long cycle_time_ms);
+    void updateDisplay();
     void pollButtons();
     long getHeatTimeMinutes() {
       return heatTimeMinutes;
     };
 
+    void setTime(long cycleTimeMS) {
+        seconds = cycleTimeMS/1000 % 60;
+        minutes = cycleTimeMS/1000/60;
+    }
   private:
     void handleButton(int lcdKey);
     int readButtons();
     
-    long heatTimeMinutes;
+    int seconds;
+    int minutes;
+    
+    int heatTimeMinutes;
 
     // LiquidCrystal lcd;
     static const int BUTTON_RIGHT  = 0;
