@@ -46,6 +46,36 @@ long getHeatEndingSoonTime() {
 }
 
 
+
+int getTimeout(long timestamp, int timeout_ms) {
+  return ! (timestamp % timeout_ms);
+}
+
+void fireTimedEvents(long timestamp) {
+
+  static long lastTimestamp = 0;
+  // run the countdown
+  if(lastTimestamp != timestamp) {
+    lastTimestamp = timestamp;
+
+    if(getTimeout(timestamp, 1000)){
+      Serial.println("1 second timeout");
+    }
+
+    if(getTimeout(timestamp, 3000)){
+      Serial.println("3 second timeout");
+    }
+
+    if(getTimeout(timestamp, 5000)){
+      Serial.println("5 second timeout");
+    }
+
+  }
+}
+
+
+
+
 /*
   on startup:
   run motor until the red flag is showing
@@ -57,6 +87,8 @@ long getHeatEndingSoonTime() {
 */
 void loop()
 {
+  fireTimedEvents(millis());
+  return;
   horn_demo();
   long cycle_time_ms = getCycleTime();
   
