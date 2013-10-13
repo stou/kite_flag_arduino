@@ -21,6 +21,21 @@ Motor::Motor(const int outputPin) {
 }
 
 
+const char* Motor::getFlagPosition() {
+  switch(flagPosition){
+  case NO_HEAT_FLAG:
+    return "red";
+  case HEAT_IN_PROGESS_FLAG:
+    return "green";
+  case HEAT_ENDING_SOON_FLAG:
+    return "yellow";
+  default:
+    break;
+  }
+  return "";
+}
+
+
 // runs motor until desired desiredFlag is showing
 void Motor::showFlag(int desiredFlag) {
   int runMotor = (flagPosition != desiredFlag);

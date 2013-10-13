@@ -25,6 +25,12 @@ public:
     showFlag(HEAT_ENDING_SOON_FLAG);
   };
 
+  int flagInPosition() {
+    return isInPosition;
+  }
+
+  const char* getFlagPosition();
+
   void demo();
 
 private:
