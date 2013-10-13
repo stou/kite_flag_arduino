@@ -1,14 +1,14 @@
 //  Author: Rasmus Stougaard
 
-#ifndef _DISPLAY_H
-#define _DISPLAY_H 1
+#ifndef _USERINTERFACE_H
+#define _USERINTERFACE_H 1
 
-// int heatNumber = 0;
-
+#include <LiquidCrystal.h>
 
 class UserInterface {
   public:
-    UserInterface();
+    UserInterface(uint8_t rs, uint8_t enable,
+    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
     ~UserInterface(){};
 
     // void setup();
@@ -35,4 +35,4 @@ class UserInterface {
 };
 
 #endif 
-// _DISPLAY_H
+// _USERINTERFACE_H

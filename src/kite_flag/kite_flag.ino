@@ -8,7 +8,8 @@
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
 
-UserInterface ui;
+// select the pins used on the LCD panel
+UserInterface ui(8, 9, 4, 5, 6, 7);
 
 // boot time
 long epoch; 

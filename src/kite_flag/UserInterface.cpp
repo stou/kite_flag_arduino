@@ -4,11 +4,11 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
-// select the pins used on the LCD panel
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+UserInterface::UserInterface(uint8_t rs, uint8_t enable,
+    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3){
+  // select the pins used on the LCD panel
+  LiquidCrystal lcd( rs, enable, d0, d1, d2, d3);
 
-
-UserInterface::UserInterface(){
   heatTimeMinutes = 10;
    // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
