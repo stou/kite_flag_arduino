@@ -12,6 +12,8 @@ UserInterface::UserInterface(uint8_t rs, uint8_t enable,
   heatTimeMinutes = 10;
    // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
+
+  lcdPtr = &lcd;
 }
 
 void UserInterface::updateDisplay()
@@ -20,19 +22,19 @@ void UserInterface::updateDisplay()
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
 
-  lcd.setCursor(0, 0);
-  lcd.print(heatTimeMinutes);
+  lcdPtr->setCursor(0, 0);
+  lcdPtr->print(heatTimeMinutes);
 
-  lcd.setCursor(15, 1);
-  lcd.print(seconds % 10);
-  lcd.setCursor(14, 1);
-  lcd.print(seconds / 10);
-  lcd.setCursor(13, 1);
-  lcd.print(":");
-  lcd.setCursor(12, 1);
-  lcd.print(minutes % 10);
-  lcd.setCursor(11, 1);
-  lcd.print(minutes / 10);
+  lcdPtr->setCursor(15, 1);
+  lcdPtr->print(seconds % 10);
+  lcdPtr->setCursor(14, 1);
+  lcdPtr->print(seconds / 10);
+  lcdPtr->setCursor(13, 1);
+  lcdPtr->print(":");
+  lcdPtr->setCursor(12, 1);
+  lcdPtr->print(minutes % 10);
+  lcdPtr->setCursor(11, 1);
+  lcdPtr->print(minutes / 10);
 
 #ifdef DEBUG_DISPLAY
   Serial.print("cycle time: ");

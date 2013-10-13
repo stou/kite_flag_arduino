@@ -33,7 +33,7 @@ class UserInterface {
     
     int heatTimeMinutes;
 
-    // LiquidCrystal lcd;
+    LiquidCrystal *lcdPtr;
     static const int BUTTON_RIGHT  = 0;
     static const int BUTTON_UP     = 1;
     static const int BUTTON_DOWN   = 2;
