@@ -1,17 +1,35 @@
 //  Author: Rasmus Stougaard
 
+#include "Motor.h"
+
+int Motor::output = 0;
+
+Motor::Motor(const int outputPin) {
+  pinMode (outputPin, OUTPUT);
+  Motor::output = outputPin;
+
+  // setup inputs for flag switches
+  pinMode(NO_HEAT_FLAG, INPUT_PULLUP);
+  pinMode(HEAT_IN_PROGESS_FLAG, INPUT_PULLUP);
+  pinMode(HEAT_ENDING_SOON_FLAG, INPUT_PULLUP);
+  
+  // setup LEDs for signalling current flag
+  pinMode(LED_FLAG_RED, OUTPUT);
+  pinMode(LED_FLAG_GREEN, OUTPUT);
+  pinMode(LED_FLAG_YELLOW, OUTPUT);
+
+}
+
 
 // runs motor until desired desiredFlag is showing
-void showFlag(int desiredFlag) {
-
-  static int flagPosition;
+void Motor::showFlag(int desiredFlag) {
   int runMotor = (flagPosition != desiredFlag);
 
-  int state = digitalRead(desiredFlag);
+  isInPosition = digitalRead(desiredFlag);
 
 #ifdef DEBUG_MOTOR
   Serial.print("s: ");
-  Serial.print(state);
+  Serial.print(isInPosition);
   Serial.print(runMotor);
   Serial.print(" ");
   Serial.println(desiredFlag);
@@ -37,17 +55,16 @@ void showFlag(int desiredFlag) {
     break;
   }
   
-  if(runMotor && state) {
+  if(runMotor && isInPosition) {
 #ifdef DEBUG_MOTOR
     Serial.println("FLAG_MOTOR running");
 #endif
-    digitalWrite(FLAG_MOTOR, HIGH);
+    digitalWrite(output, HIGH);
   } else {
 #ifdef DEBUG_MOTOR
     Serial.println("FLAG_MOTOR off");
 #endif
     flagPosition = desiredFlag;
-    digitalWrite(FLAG_MOTOR, LOW);
+    digitalWrite(output, LOW);
   }
 }
-

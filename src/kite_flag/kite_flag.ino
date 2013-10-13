@@ -5,6 +5,7 @@
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
 #include "Horn.h"
+#include "Motor.h"
 
 #include "common.h"
 
@@ -14,6 +15,7 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 UserInterface ui(&lcd);
 
 Horn horn(HORN);
+Motor motor(FLAG_MOTOR);
 
 // boot time
 long epoch; 
@@ -21,20 +23,7 @@ long epoch;
 void setup()
 {
   epoch = millis();
-  
-  // setup inputs for flag switches
-  pinMode (NO_HEAT_FLAG, INPUT_PULLUP);
-  pinMode (HEAT_IN_PROGESS_FLAG, INPUT_PULLUP);
-  pinMode (HEAT_ENDING_SOON_FLAG, INPUT_PULLUP);
-
-  // setup outputs for Motor and Horn
-  pinMode (FLAG_MOTOR, OUTPUT);
-  
-  // setup LEDs for signalling current flag
-  pinMode(LED_FLAG_RED, OUTPUT);
-  pinMode(LED_FLAG_GREEN, OUTPUT);
-  pinMode(LED_FLAG_YELLOW, OUTPUT);
-    
+      
   Serial.begin(9600);
   Serial.println("setup done");
 }
@@ -107,19 +96,19 @@ void loop()
 #ifdef DEBUG_MAIN
     Serial.println("show NO_HEAT_FLAG");
 #endif
-    showFlag(NO_HEAT_FLAG);
+    motor.red();
   } else {
     // HEAT_ENDING for heat ending
     if (cycle_time_ms < getHeatEndingSoonTime()) {
 #ifdef DEBUG_MAIN
       Serial.println("show HEAT_IN_PROGESS_FLAG");
 #endif
-      showFlag(HEAT_IN_PROGESS_FLAG);
+      motor.green();
     } else {
 #ifdef DEBUG_MAIN
       Serial.println("show HEAT_ENDING_SOON_FLAG");
 #endif
-      showFlag(HEAT_ENDING_SOON_FLAG);
+      motor.yellow();
     }
     
   }

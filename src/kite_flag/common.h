@@ -27,16 +27,5 @@ const int FLAG_MOTOR = 13;
 const int HORN = 11;
 #endif
 
-const int LED_FLAG_RED = A1;
-const int LED_FLAG_GREEN = A2;
-const int LED_FLAG_YELLOW = A3;
-
-//red flag
-const int NO_HEAT_FLAG = 2; 
-// green flag
-const int HEAT_IN_PROGESS_FLAG = 3;
-// yellow flag
-const int HEAT_ENDING_SOON_FLAG = 12;
-
 #endif 
 // _COMMON_H
