@@ -7,8 +7,10 @@
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
 
-// select the pins used on the LCD panel
-UserInterface ui(8, 9, 4, 5, 6, 7);
+// select the pins used on the LCD shield
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
+
+UserInterface ui(&lcd);
 
 // boot time
 long epoch; 
@@ -58,7 +60,7 @@ void fireTimedEvents(long timestamp) {
     lastTimestamp = timestamp;
 
     if(getTimeout(timestamp, 1000)){
-      Serial.println("Updating display (1 second timeout)");
+      // Serial.println("Updating display (1 second timeout)");
       ui.setTime(getCycleTime());
       ui.updateDisplay();
     }

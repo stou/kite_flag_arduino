@@ -9,8 +9,7 @@
 
 class UserInterface {
   public:
-    UserInterface(uint8_t rs, uint8_t enable,
-    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+    UserInterface(LiquidCrystal *lcdObj);
     ~UserInterface(){};
 
     // void setup();
@@ -33,7 +32,7 @@ class UserInterface {
     
     int heatTimeMinutes;
 
-    LiquidCrystal *lcdPtr;
+    LiquidCrystal *lcd;
     static const int BUTTON_RIGHT  = 0;
     static const int BUTTON_UP     = 1;
     static const int BUTTON_DOWN   = 2;
