@@ -31,8 +31,7 @@ void setup()
   pinMode(LED_FLAG_GREEN, OUTPUT);
   pinMode(LED_FLAG_YELLOW, OUTPUT);
   
-  // set up the LCD's number of columns and rows: 
-  lcd.begin(16, 2);
+  setup_display();
   
   Serial.begin(9600);
   Serial.println("setup done");

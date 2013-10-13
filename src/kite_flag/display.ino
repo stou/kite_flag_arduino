@@ -2,7 +2,12 @@
 
 #include "display.h"
 
-int update_display(long cycle_time_ms)
+void setup_display(){
+   // set up the LCD's number of columns and rows: 
+  lcd.begin(16, 2);
+}
+
+void update_display(long cycle_time_ms)
 {
   // TODO update the contents on the real display
   // set the cursor to column 0, line 1

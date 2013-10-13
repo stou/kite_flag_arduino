@@ -15,5 +15,9 @@ const int BUTTON_LEFT   = 3;
 const int BUTTON_SELECT = 4;
 const int BUTTON_NONE   = 5;
 
+extern void setup_display();
+extern void update_display();
+extern void handle_buttons();
+
 #endif 
 // _DISPLAY_H
