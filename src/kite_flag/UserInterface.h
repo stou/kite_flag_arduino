@@ -5,6 +5,8 @@
 
 #define DEBUG_DISPLAY 1
 
+// #define HAS_LCD_SHIELD_CONNECTED 1
+
 #include <LiquidCrystal.h>
 
 class UserInterface {
@@ -23,6 +25,11 @@ class UserInterface {
         seconds = cycleTimeMS/1000 % 60;
         minutes = cycleTimeMS/1000/60;
     }
+
+    void setFlag(int flag){
+      flagPosition = flag;
+    }
+
   private:
     void handleButton(int lcdKey);
     int readButtons();
@@ -30,7 +37,7 @@ class UserInterface {
     int seconds;
     int minutes;
     
-    int heatTimeMinutes;
+    long heatTimeMinutes;
 
     LiquidCrystal *lcd;
     static const int BUTTON_RIGHT  = 0;
@@ -40,6 +47,10 @@ class UserInterface {
     static const int BUTTON_SELECT = 4;
     static const int BUTTON_NONE   = 5;
     
+    static const long MAX_HEAT_TIME = 30;
+    static const long MIN_HEAT_TIME = 1;
+
+    int flagPosition;
 };
 
 #endif 

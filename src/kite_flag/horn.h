@@ -11,6 +11,11 @@ public:
   Horn(int outputPin);
   ~Horn(){};
 
+  void update()
+  {
+    signal(HORN_UPDATE);
+  };
+
   void red()
   {
     signal(HORN_RED);

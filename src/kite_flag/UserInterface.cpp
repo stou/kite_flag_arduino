@@ -8,7 +8,7 @@ UserInterface::UserInterface(LiquidCrystal *lcdObj){
   // // select the pins used on the LCD panel
   // LiquidCrystal lcd( rs, enable, d0, d1, d2, d3);
 
-  heatTimeMinutes = 10;
+  heatTimeMinutes = 10L;
    // set up the LCD's number of columns and rows: 
   lcd->begin(16, 2);
 
@@ -17,6 +17,8 @@ UserInterface::UserInterface(LiquidCrystal *lcdObj){
 
 void UserInterface::updateDisplay()
 {
+
+#ifdef HAS_LCD_SHIELD_CONNECTED
   // TODO update the contents on the real display
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
@@ -34,14 +36,26 @@ void UserInterface::updateDisplay()
   lcd->print(minutes % 10);
   lcd->setCursor(11, 1);
   lcd->print(minutes / 10);
+#endif
 
 #ifdef DEBUG_DISPLAY
-  Serial.print("cycle time: ");
+
+  Serial.print("heat duration: ");
+  Serial.print(getHeatTimeMinutes());
+  Serial.print(" flag: ");
+  Serial.print(flagPosition);
+  Serial.print(" cycle time: ");
   Serial.print(minutes);
   Serial.print(":");
-  Serial.println(seconds);
-  Serial.print("heatTimeMinutes: ");
-  Serial.println(heatTimeMinutes);
+  Serial.print(seconds);
+
+  Serial.print(" SW: ");
+  Serial.print(digitalRead(2));
+  Serial.print(digitalRead(3));
+  Serial.print(digitalRead(12));
+
+  Serial.print(" M: ");
+  Serial.println(digitalRead(11));
 #endif
 }
 
@@ -95,10 +109,14 @@ void UserInterface::handleButton(int lcdKey)
   //   heatNumber--;
   //   break;
   case BUTTON_UP:
-    heatTimeMinutes++;
+    if(MAX_HEAT_TIME > heatTimeMinutes){
+      heatTimeMinutes++;
+    }
     break;
   case BUTTON_DOWN:
-    heatTimeMinutes--;
+    if(MIN_HEAT_TIME < heatTimeMinutes){
+      heatTimeMinutes--;
+    }
     break;
   // case BUTTON_SELECT:
   //   lcd.print(GREEN);

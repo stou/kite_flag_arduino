@@ -29,7 +29,7 @@ public:
     return isInPosition;
   }
 
-  const char* getFlagPosition();
+  int getFlagPosition();
 
   void demo();
 

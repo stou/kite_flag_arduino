@@ -1,6 +1,6 @@
 // Author: Rasmus Stougaard
 
-//#define DEBUG_MAIN 1
+#define DEBUG_MAIN 1
 
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
@@ -50,10 +50,16 @@ void fireTimedEvents(long timestamp) {
   if(lastTimestamp != timestamp) {
     lastTimestamp = timestamp;
 
+    ui.pollButtons();
+
     if(getTimeout(timestamp, 1000)){
-      // Serial.println("Updating display (1 second timeout)");
+//      Serial.println("Updating display (1 second timeout)");
       ui.setTime(getCycleTime());
       ui.updateDisplay();
+    }
+
+    if(getTimeout(timestamp, 100)){
+      horn.update();
     }
 
     if(getTimeout(timestamp, 3000)){
@@ -68,8 +74,6 @@ void fireTimedEvents(long timestamp) {
 }
 
 
-
-
 /*
   on startup:
   run motor until the red flag is showing
@@ -79,37 +83,52 @@ void fireTimedEvents(long timestamp) {
   show green for HEAT_TIME minutes
   show yellow for (HEAT_TIME_MINUTES - HEAT_ENDING_SOON_TIME_MINUTES) minutes
 */
-void loop()
-{
-//  fireTimedEvents(millis());
-  horn.demo();
-  return;
+
+void flag_control(){
+  static int lastState = -1;
+
+  int state = 0;
+
   long cycle_time_ms = getCycleTime();
   
-  ui.pollButtons();
-  ui.setTime(cycle_time_ms);
-  ui.updateDisplay();
+  ui.setFlag(motor.getFlagPosition());
 
-  
   // no heat in progress
   if (cycle_time_ms < (TRANSITION_TIME_MINUTES * MS_PER_MINUTE)) {
-#ifdef DEBUG_MAIN
-    Serial.println("show NO_HEAT_FLAG");
-#endif
     motor.red();
+    state = 1;
+    if(lastState != state){
+      horn.red();
+      Serial.print(cycle_time_ms);
+      Serial.println(" showing RED flag");
+    }
   } else {
     // HEAT_ENDING for heat ending
     if (cycle_time_ms < getHeatEndingSoonTime()) {
-#ifdef DEBUG_MAIN
-      Serial.println("show HEAT_IN_PROGESS_FLAG");
-#endif
       motor.green();
+      state = 2;
+      if(lastState != state){
+        horn.green();
+        Serial.print(cycle_time_ms);
+        Serial.println("showing GREEN flag");
+      }
     } else {
-#ifdef DEBUG_MAIN
-      Serial.println("show HEAT_ENDING_SOON_FLAG");
-#endif
       motor.yellow();
-    }
-    
+      state = 3;
+      if(lastState != state){
+        horn.yellow();
+        Serial.print(cycle_time_ms);
+        Serial.println("showing YELLOW flag");
+      }
+    }  
   }
+
+  lastState = state;
+}
+
+
+void loop()
+{
+  fireTimedEvents(millis());
+  flag_control();
 }

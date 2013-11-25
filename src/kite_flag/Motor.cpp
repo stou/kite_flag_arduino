@@ -21,18 +21,18 @@ Motor::Motor(const int outputPin) {
 }
 
 
-const char* Motor::getFlagPosition() {
+int Motor::getFlagPosition() {
   switch(flagPosition){
   case NO_HEAT_FLAG:
-    return "red";
+    return 1;
   case HEAT_IN_PROGESS_FLAG:
-    return "green";
+    return 2;
   case HEAT_ENDING_SOON_FLAG:
-    return "yellow";
+    return 3;
   default:
     break;
   }
-  return "";
+  return 1;
 }
 
 

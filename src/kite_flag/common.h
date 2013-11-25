@@ -16,7 +16,11 @@ const long HEAT_ENDING_SOON_TIME_MINUTES = 1;
 // END OF CONFIGURATION ==========================
 
 // number of milliseconds per minute
+#ifdef DEBUG_MAIN
+const long MS_PER_MINUTE = 4000;
+#else
 const long MS_PER_MINUTE = 60000;
+#endif
 
 //Output for motor setup,Horn, stop switchs
 #ifdef DEBUG_HORN
