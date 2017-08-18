@@ -47,10 +47,11 @@ void fireTimedEvents(long timestamp) {
 
   static long lastTimestamp = 0;
   // run the countdown
-  if(lastTimestamp != timestamp) {
+
+  if(lastTimestamp != timestamp) {
     lastTimestamp = timestamp;
 
-    ui.pollButtons();
+    //ui.pollButtons(); // DEBUG make the buttons work, floating input makes the loop time go crazy
 
     if(getTimeout(timestamp, 1000)){
 //      Serial.println("Updating display (1 second timeout)");
@@ -69,7 +70,6 @@ void fireTimedEvents(long timestamp) {
     if(getTimeout(timestamp, 5000)){
       Serial.println("5 second timeout");
     }
-
   }
 }
 
