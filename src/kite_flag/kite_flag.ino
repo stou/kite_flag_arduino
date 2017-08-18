@@ -1,6 +1,6 @@
 // Author: Rasmus Stougaard
 
-#define DEBUG_MAIN 1
+//#define DEBUG_MAIN 1
 
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
@@ -51,7 +51,7 @@ void fireTimedEvents(long timestamp) {
   if(lastTimestamp != timestamp) {
     lastTimestamp = timestamp;
 
-    //ui.pollButtons(); // DEBUG make the buttons work, floating input makes the loop time go crazy
+    ui.pollButtons(); // DEBUG make the buttons work, floating input makes the loop time go crazy
 
     if(getTimeout(timestamp, 1000)){
 //      Serial.println("Updating display (1 second timeout)");
@@ -62,7 +62,7 @@ void fireTimedEvents(long timestamp) {
     if(getTimeout(timestamp, 100)){
       horn.update();
     }
-
+/*
     if(getTimeout(timestamp, 3000)){
       Serial.println("3 second timeout");
     }
@@ -70,6 +70,7 @@ void fireTimedEvents(long timestamp) {
     if(getTimeout(timestamp, 5000)){
       Serial.println("5 second timeout");
     }
+    */
   }
 }
 

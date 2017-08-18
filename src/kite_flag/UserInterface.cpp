@@ -9,10 +9,12 @@ UserInterface::UserInterface(LiquidCrystal *lcdObj){
   // LiquidCrystal lcd( rs, enable, d0, d1, d2, d3);
 
   heatTimeMinutes = 10L;
+  
+  lcd = lcdObj;
+
    // set up the LCD's number of columns and rows: 
   lcd->begin(16, 2);
 
-  lcd = lcdObj;
 }
 
 void UserInterface::updateDisplay()
@@ -36,6 +38,27 @@ void UserInterface::updateDisplay()
   lcd->print(minutes % 10);
   lcd->setCursor(11, 1);
   lcd->print(minutes / 10);
+
+  // DEBUG
+  lcd->setCursor(0,1);
+  lcd->print("F:");
+  lcd->setCursor(4,1);
+  lcd->print(flagPosition);
+
+  lcd->setCursor(4,0);
+  lcd->print("M: ");
+  lcd->setCursor(7,0);
+  lcd->print(digitalRead(11));
+
+//DEBUG
+  
+  lcd->setCursor(11,0);
+  lcd->print(digitalRead(2) ? "R" : "r");
+  lcd->setCursor(13,0);
+  lcd->print(digitalRead(3) ? "G" : "g");
+  lcd->setCursor(15,0);
+  lcd->print(digitalRead(12) ? "Y" : "y");
+  
 #endif
 
 #ifdef DEBUG_DISPLAY

@@ -5,7 +5,7 @@
 
 #define DEBUG_DISPLAY 1
 
-// #define HAS_LCD_SHIELD_CONNECTED 1
+#define HAS_LCD_SHIELD_CONNECTED 1
 
 #include <LiquidCrystal.h>
 

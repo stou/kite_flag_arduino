@@ -45,3 +45,8 @@ kite_flag_arduino
 ### Turning mechanics
 
 ![](docs/IMG_20131006_195919.jpg)
+
+## Display shield
+
+https://www.dfrobot.com/wiki/index.php/LCD_KeyPad_Shield_For_Arduino_SKU:_DFR0009
+
