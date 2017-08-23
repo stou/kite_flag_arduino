@@ -23,7 +23,7 @@ long epoch;
 void setup()
 {
   epoch = millis();
-      
+          
   Serial.begin(9600);
   Serial.println("setup done");
 }
@@ -49,7 +49,8 @@ void fireTimedEvents(long timestamp) {
   if(lastTimestamp != timestamp) {
     lastTimestamp = timestamp;
 
-    ui.pollButtons(); // DEBUG make the buttons work, floating input makes the loop time go crazy
+    // Need the LiquidCrystal display shield, floating input makes the loop time go crazy
+    ui.pollButtons(); 
 
     if(getTimeout(timestamp, 200)){
       ui.setTime(getCycleTime());
@@ -59,6 +60,42 @@ void fireTimedEvents(long timestamp) {
     if(getTimeout(timestamp, 100)){
       horn.update();
     }
+
+#if 0 // DEBUG_BUTTONS
+    if(getTimeout(timestamp, 200)){
+        Serial.print("button: ");
+        Serial.print(analogRead(0));
+        Serial.print(" heat_duration: ");
+        Serial.println(ui.getHeatTimeMinutes()*100);
+    }
+#endif
+    
+#if 0 // DEBUG_OUPUTS
+    if(getTimeout(timestamp, 100)){
+      
+        Serial.print(" red: ");
+        Serial.print(digitalRead(A1)+2);
+        Serial.print(" green: ");
+        Serial.print(digitalRead(A2)+4);
+        Serial.print(" yellow: ");
+        Serial.print(digitalRead(A3)+6);      
+        Serial.print(" SW: ");
+        Serial.print(" red: ");
+        Serial.print(digitalRead(2)+10);
+        Serial.print(" green: ");
+        Serial.print(digitalRead(3)+12);
+        Serial.print(" yellow: ");
+        Serial.print(digitalRead(12)+14);
+
+        Serial.print(" horn: ");
+        Serial.print(digitalRead(13) ? "-3" : "-2" );
+      
+        Serial.print(" Motor: ");
+        Serial.print(digitalRead(11) ? "0" : "1" );
+        Serial.print(" In-pos: ");
+        Serial.println(motor.flagInPosition() ? "1" : "0");
+    }
+#endif
   }
 }
 

@@ -8,6 +8,7 @@
 #define HAS_LCD_SHIELD_CONNECTED 1
 
 #include <LiquidCrystal.h>
+#include <Arduino.h>
 
 class UserInterface {
   public:
@@ -39,8 +40,8 @@ class UserInterface {
     }
     
   private:
-    char getUiFlagDesc(int flag);
-
+    char getUiFlagDescription(int flag);
+    char getMotorRunningGlyph();
     int flagIsInPosition;
   
     void handleButton(int lcdKey);
@@ -64,6 +65,10 @@ class UserInterface {
 
     int flagPosition;
     int desiredFlagPosition;
+
+    static const char motorGlyphs[];
+    static byte customBackslash[8];
+    static const uint8_t customBackslashCode = 2;
 };
 
 #endif 

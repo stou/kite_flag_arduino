@@ -3,8 +3,6 @@
 #ifndef _HORN_H
 #define _HORN_H 1
 
-//#define DEBUG_HORN 1
-
 class Horn {
 public:
 
@@ -28,8 +26,6 @@ public:
   {
     signal(HORN_YELLOW);
   };
-
-  void demo();
 
 private:
   void signal(int type);

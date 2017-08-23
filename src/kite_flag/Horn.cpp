@@ -29,21 +29,12 @@ void Horn::signal(int type) {
     switch(type) {
       case HORN_RED:
         remainingTicks = 8;
-#ifdef DEBUG_HORN
-    Serial.println("horn type: HORN_RED");
-#endif
         break;
       case HORN_GREEN:
         remainingTicks = 4;
-#ifdef DEBUG_HORN
-    Serial.println("horn type: HORN_GREEN");
-#endif
         break;
       case HORN_YELLOW:
         remainingTicks = 6;
-#ifdef DEBUG_HORN
-    Serial.println("horn type: HORN_YELLOW");
-#endif
         break;
       default:
       break;    
@@ -72,33 +63,9 @@ void Horn::signal(int type) {
   long timestamp = millis();
   // run the countdown
   if(remainingTicks && lastTimestamp != timestamp && ! (timestamp % HORN_TICK_DURATION_MS)){
-#ifdef DEBUG_HORN
-    Serial.print("horn ticks: ");
-    Serial.print(remainingTicks);
-    Serial.print(" : ");
-    Serial.println(digitalRead(output)? "ON": "OFF");
-#endif
     --remainingTicks;
     lastTimestamp = timestamp;
   }
 
 }
 
-void Horn::demo() {
-
-  static int horn_signal_type = HORN_RED;
-  long time = millis();
-
-  signal(HORN_UPDATE);
-
-  // demonstrate the horn signals by alternating between them
-  int signal_cycle_time = HORN_TICK_DURATION_MS * (8 + 1);
-  if(!(time % signal_cycle_time)) {
-    signal(horn_signal_type % 3 + 1);
-    ++horn_signal_type;
-
-//    horn_signal(HORN_RED);
-//    horn_signal(HORN_GREEN);
-//    horn_signal(HORN_YELLOW);
-  } 
-}

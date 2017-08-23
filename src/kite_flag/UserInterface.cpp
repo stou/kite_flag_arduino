@@ -4,6 +4,21 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 
+
+byte UserInterface::customBackslash[8] = {
+  0b00000,
+  0b10000,
+  0b01000,
+  0b00100,
+  0b00010,
+  0b00001,
+  0b00000,
+  0b00000
+};
+    
+//const char UserInterface::motorGlyphs[] = "-\\|/";
+const char UserInterface::motorGlyphs[] =   {'-',customBackslashCode, '|', '/'};
+
 UserInterface::UserInterface(LiquidCrystal *lcdObj){
   // // select the pins used on the LCD panel
   // LiquidCrystal lcd( rs, enable, d0, d1, d2, d3);
@@ -12,12 +27,14 @@ UserInterface::UserInterface(LiquidCrystal *lcdObj){
   
   lcd = lcdObj;
 
+  // create missing backslash char, see https://omerk.github.io/lcdchargen/
+  lcd->createChar(customBackslashCode, customBackslash);
+
    // set up the LCD's number of columns and rows: 
   lcd->begin(16, 2);
-
 }
 
-char UserInterface::getUiFlagDesc(int flag) {
+char UserInterface::getUiFlagDescription(int flag) {
   switch(flag){
     case 1:
       return 'R';
@@ -30,15 +47,23 @@ char UserInterface::getUiFlagDesc(int flag) {
   }
 }
 
+char UserInterface::getMotorRunningGlyph() {
+  static int updateIteration = 0;
+  return motorGlyphs[updateIteration++ % 4];
+}
+
 void UserInterface::updateDisplay()
 {
-
+  
 #ifdef HAS_LCD_SHIELD_CONNECTED
   // TODO update the contents on the real display
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
 
   lcd->setCursor(0, 0);
+  if(10 > heatTimeMinutes) {
+    lcd->print(" ");
+  }
   lcd->print(heatTimeMinutes);
 
   lcd->setCursor(15, 1);
@@ -56,16 +81,14 @@ void UserInterface::updateDisplay()
   lcd->setCursor(4,0);
   lcd->print("F:");
   lcd->setCursor(6,0);
-  lcd->print(getUiFlagDesc(flagPosition));
+  lcd->print(getUiFlagDescription(flagPosition));
   lcd->setCursor(7,0);
-  lcd->print(getUiFlagDesc(desiredFlagPosition));
+  lcd->print(getUiFlagDescription(desiredFlagPosition));
 
   lcd->setCursor(9,0);
   lcd->print("M:");
   lcd->setCursor(11,0);
-  lcd->print(digitalRead(11));
-
-//DEBUG
+  lcd->print(digitalRead(11) ? '_' : getMotorRunningGlyph());
   
   lcd->setCursor(13,0);
   lcd->print(digitalRead(2) ? "R" : "r");
@@ -81,7 +104,9 @@ void UserInterface::updateDisplay()
   Serial.print("heat duration: ");
   Serial.print(getHeatTimeMinutes());
   Serial.print(" flag: ");
-  Serial.print(flagPosition);
+  Serial.print(getUiFlagDescription(flagPosition));
+  Serial.print(" desired flag: ");
+  Serial.print(getUiFlagDescription(desiredFlagPosition));
   Serial.print(" cycle time: ");
   Serial.print(minutes);
   Serial.print(":");
@@ -93,9 +118,9 @@ void UserInterface::updateDisplay()
   Serial.print(digitalRead(12));
 
   Serial.print(" Motor: ");
-  Serial.print(digitalRead(11));
+  Serial.print(digitalRead(11) ? "OFF" : "ON " );
   Serial.print(" In pos: ");
-  Serial.println(flagIsInPosition);
+  Serial.println(flagIsInPosition ? "NO " : "YES");
 #endif
 }
 
