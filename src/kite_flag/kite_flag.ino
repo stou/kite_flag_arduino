@@ -1,6 +1,6 @@
 // Author: Rasmus Stougaard
 
-//#define DEBUG_MAIN 1
+#define DEBUG_MAIN 1
 
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
@@ -37,8 +37,6 @@ long getHeatEndingSoonTime() {
   return (TRANSITION_TIME_MINUTES + ui.getHeatTimeMinutes() - HEAT_ENDING_SOON_TIME_MINUTES) *  MS_PER_MINUTE;
 }
 
-
-
 int getTimeout(long timestamp, int timeout_ms) {
   return ! (timestamp % timeout_ms);
 }
@@ -53,8 +51,7 @@ void fireTimedEvents(long timestamp) {
 
     ui.pollButtons(); // DEBUG make the buttons work, floating input makes the loop time go crazy
 
-    if(getTimeout(timestamp, 1000)){
-//      Serial.println("Updating display (1 second timeout)");
+    if(getTimeout(timestamp, 200)){
       ui.setTime(getCycleTime());
       ui.updateDisplay();
     }
@@ -62,15 +59,6 @@ void fireTimedEvents(long timestamp) {
     if(getTimeout(timestamp, 100)){
       horn.update();
     }
-/*
-    if(getTimeout(timestamp, 3000)){
-      Serial.println("3 second timeout");
-    }
-
-    if(getTimeout(timestamp, 5000)){
-      Serial.println("5 second timeout");
-    }
-    */
   }
 }
 
@@ -93,6 +81,7 @@ void flag_control(){
   long cycle_time_ms = getCycleTime();
   
   ui.setFlag(motor.getFlagPosition());
+  ui.setDesiredFlagPosition(motor.getDesiredFlagPosition());
 
   // no heat in progress
   if (cycle_time_ms < (TRANSITION_TIME_MINUTES * MS_PER_MINUTE)) {
@@ -100,8 +89,6 @@ void flag_control(){
     state = 1;
     if(lastState != state){
       horn.red();
-      Serial.print(cycle_time_ms);
-      Serial.println(" showing RED flag");
     }
   } else {
     // HEAT_ENDING for heat ending
@@ -110,16 +97,12 @@ void flag_control(){
       state = 2;
       if(lastState != state){
         horn.green();
-        Serial.print(cycle_time_ms);
-        Serial.println("showing GREEN flag");
       }
     } else {
       motor.yellow();
       state = 3;
       if(lastState != state){
         horn.yellow();
-        Serial.print(cycle_time_ms);
-        Serial.println("showing YELLOW flag");
       }
     }  
   }

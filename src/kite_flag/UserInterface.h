@@ -3,7 +3,7 @@
 #ifndef _USERINTERFACE_H
 #define _USERINTERFACE_H 1
 
-#define DEBUG_DISPLAY 1
+//#define DEBUG_DISPLAY 1
 
 #define HAS_LCD_SHIELD_CONNECTED 1
 
@@ -30,7 +30,19 @@ class UserInterface {
       flagPosition = flag;
     }
 
+    void setFlagIsInPosition(int state) {
+      flagIsInPosition = state;
+    }
+
+    void setDesiredFlagPosition(int flag) {
+       desiredFlagPosition = flag;
+    }
+    
   private:
+    char getUiFlagDesc(int flag);
+
+    int flagIsInPosition;
+  
     void handleButton(int lcdKey);
     int readButtons();
     
@@ -51,6 +63,7 @@ class UserInterface {
     static const long MIN_HEAT_TIME = 1;
 
     int flagPosition;
+    int desiredFlagPosition;
 };
 
 #endif 

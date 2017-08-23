@@ -7,8 +7,9 @@
 int Horn::output = 0;
 
 Horn::Horn(const int outputPin) {
-    pinMode (outputPin, OUTPUT);
     Horn::output = outputPin;
+    digitalWrite(output, HIGH);
+    pinMode (outputPin, OUTPUT);
 }
 
 // Unit of sound lenth is controlled by HORN_TICK_DURATION_MS
@@ -61,10 +62,10 @@ void Horn::signal(int type) {
     case 5:
     // case 6:
     case 7:
-      digitalWrite(output, HIGH);
+      digitalWrite(output, LOW);
       break;
     default:
-      digitalWrite(output, LOW);
+      digitalWrite(output, HIGH);
       break;    
   }
 

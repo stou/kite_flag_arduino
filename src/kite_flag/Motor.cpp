@@ -5,8 +5,11 @@
 int Motor::output = 0;
 
 Motor::Motor(const int outputPin) {
-  pinMode (outputPin, OUTPUT);
   Motor::output = outputPin;
+
+  // turn off motor
+  digitalWrite(output, HIGH);
+  pinMode (outputPin, OUTPUT);
 
   // setup inputs for flag switches
   pinMode(NO_HEAT_FLAG, INPUT_PULLUP);
@@ -17,7 +20,6 @@ Motor::Motor(const int outputPin) {
   pinMode(LED_FLAG_RED, OUTPUT);
   pinMode(LED_FLAG_GREEN, OUTPUT);
   pinMode(LED_FLAG_YELLOW, OUTPUT);
-
 }
 
 
@@ -32,23 +34,30 @@ int Motor::getFlagPosition() {
   default:
     break;
   }
-  return 1;
+  return 0;
+}
+
+int Motor::getDesiredFlagPosition() {
+  switch(desiredFlagPosition){
+  case NO_HEAT_FLAG:
+    return 1;
+  case HEAT_IN_PROGESS_FLAG:
+    return 2;
+  case HEAT_ENDING_SOON_FLAG:
+    return 3;
+  default:
+    break;
+  }
+  return 0;
 }
 
 
 // runs motor until desired desiredFlag is showing
 void Motor::showFlag(int desiredFlag) {
+  desiredFlagPosition = desiredFlag;
   int runMotor = (flagPosition != desiredFlag);
 
   isInPosition = digitalRead(desiredFlag);
-
-#ifdef DEBUG_MOTOR
-  Serial.print("s: ");
-  Serial.print(isInPosition);
-  Serial.print(runMotor);
-  Serial.print(" ");
-  Serial.println(desiredFlag);
-#endif
 
   switch(desiredFlag) {
   case NO_HEAT_FLAG:
@@ -71,15 +80,9 @@ void Motor::showFlag(int desiredFlag) {
   }
   
   if(runMotor && isInPosition) {
-#ifdef DEBUG_MOTOR
-    Serial.println("FLAG_MOTOR running");
-#endif
-    digitalWrite(output, HIGH);
-  } else {
-#ifdef DEBUG_MOTOR
-    Serial.println("FLAG_MOTOR off");
-#endif
-    flagPosition = desiredFlag;
     digitalWrite(output, LOW);
+  } else {
+    flagPosition = desiredFlag;
+    digitalWrite(output, HIGH);
   }
 }

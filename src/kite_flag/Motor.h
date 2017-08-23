@@ -3,7 +3,7 @@
 #ifndef _MOTOR_H
 #define _MOTOR_H 1
 
-#define DEBUG_HORN 1
+//#define DEBUG_MOTOR 1
 #include <Arduino.h>
 
 class Motor {
@@ -30,11 +30,11 @@ public:
   }
 
   int getFlagPosition();
-
-  void demo();
+  int getDesiredFlagPosition();
 
 private:
   int flagPosition;
+  int desiredFlagPosition;
   int isInPosition;
   void showFlag(int desiredFlag);
   static int output;
@@ -56,6 +56,7 @@ private:
   static const int HEAT_IN_PROGESS_FLAG = 3;
   // yellow flag
   static const int HEAT_ENDING_SOON_FLAG = 12;
+
 
 };
 

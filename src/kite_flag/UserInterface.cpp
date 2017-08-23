@@ -17,6 +17,19 @@ UserInterface::UserInterface(LiquidCrystal *lcdObj){
 
 }
 
+char UserInterface::getUiFlagDesc(int flag) {
+  switch(flag){
+    case 1:
+      return 'R';
+    case 2:
+      return 'G';
+    case 3:
+      return 'Y';
+    default:
+     return '?'; 
+  }
+}
+
 void UserInterface::updateDisplay()
 {
 
@@ -40,21 +53,23 @@ void UserInterface::updateDisplay()
   lcd->print(minutes / 10);
 
   // DEBUG
-  lcd->setCursor(0,1);
-  lcd->print("F:");
-  lcd->setCursor(4,1);
-  lcd->print(flagPosition);
-
   lcd->setCursor(4,0);
-  lcd->print("M: ");
+  lcd->print("F:");
+  lcd->setCursor(6,0);
+  lcd->print(getUiFlagDesc(flagPosition));
   lcd->setCursor(7,0);
+  lcd->print(getUiFlagDesc(desiredFlagPosition));
+
+  lcd->setCursor(9,0);
+  lcd->print("M:");
+  lcd->setCursor(11,0);
   lcd->print(digitalRead(11));
 
 //DEBUG
   
-  lcd->setCursor(11,0);
-  lcd->print(digitalRead(2) ? "R" : "r");
   lcd->setCursor(13,0);
+  lcd->print(digitalRead(2) ? "R" : "r");
+  lcd->setCursor(14,0);
   lcd->print(digitalRead(3) ? "G" : "g");
   lcd->setCursor(15,0);
   lcd->print(digitalRead(12) ? "Y" : "y");
@@ -77,8 +92,10 @@ void UserInterface::updateDisplay()
   Serial.print(digitalRead(3));
   Serial.print(digitalRead(12));
 
-  Serial.print(" M: ");
-  Serial.println(digitalRead(11));
+  Serial.print(" Motor: ");
+  Serial.print(digitalRead(11));
+  Serial.print(" In pos: ");
+  Serial.println(flagIsInPosition);
 #endif
 }
 

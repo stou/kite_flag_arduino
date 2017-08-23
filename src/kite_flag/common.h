@@ -1,13 +1,9 @@
-
 //  Author: Rasmus Stougaard
 
 #ifndef _COMMON_H
 #define _COMMON_H 1
 
 #include <Arduino.h>
-
-// uncomment this line to single step in simuino simulator
-
 
 //variabel for changing heat_time in min
 const long TRANSITION_TIME_MINUTES = 2L; 
@@ -23,13 +19,9 @@ const long MS_PER_MINUTE = 60000L;
 #endif
 
 //Output for motor setup,Horn, stop switchs
-#ifdef DEBUG_HORN
 const int FLAG_MOTOR = 11;
 const int HORN = 13;
-#else
-const int FLAG_MOTOR = 13;
-const int HORN = 11;
-#endif
 
 #endif 
 // _COMMON_H
+
