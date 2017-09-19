@@ -1,6 +1,6 @@
 // Author: Rasmus Stougaard
 
-#define DEBUG_MAIN 1
+// #define DEBUG_MAIN 1
 
 #include <LiquidCrystal.h>
 #include "UserInterface.h"
